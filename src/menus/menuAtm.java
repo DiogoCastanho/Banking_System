@@ -10,7 +10,7 @@ public class menuAtm {
     int opcao;
 
       do {
-          System.out.println("\n--- Menu Atm ---");
+          System.out.println("\n=== Menu Atm ===");
           System.out.println("1 - Levantar dinheiro");
           System.out.println("2 - Depositar dinheiro");
           System.out.println("0 - Voltar");

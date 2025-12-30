@@ -29,7 +29,7 @@ public class Cliente {
     public String getSenha() { return senha; }
 
     // using only to create a new account for the existing client in system (savings account)
-    public void criarConta(int numero, LocalDate validade, int cvv, int pin, String iban, double saldo, TipoContaEnum tipoconta) {
+    public void criarConta(String numero, LocalDate validade, int cvv, int pin, String iban, double saldo, TipoContaEnum tipoconta) {
         contas.add(new Conta(new Cartao(numero, validade, cvv, pin), iban, saldo, tipoconta));
     }
 

@@ -25,12 +25,16 @@ public class Utils {
       System.out.println(VERDE + mensagem + RESET);
   }
 
+  public static void aviso(String mensagem) {
+      System.out.println(AMARELO + mensagem + RESET);
+  }
+
   // client validations when user want create a client
   public static String lerNome(Scanner sc) {
     String nome;
     do {
       System.out.print("Nome: ");
-      nome = sc.next();
+      nome = sc.nextLine();
 
       if (nome.isBlank()) {
           erro("Erro: O nome não pode estar vazio.");
@@ -44,7 +48,7 @@ public class Utils {
     String nif;
     do {
       System.out.print("NIF: ");
-      nif = sc.next();
+      nif = sc.nextLine();
 
      if (!nif.matches("\\d{9}")) {
         erro("Erro: O NIF tem de ter exatamente 9 números.");
@@ -81,5 +85,6 @@ public class Utils {
 
       return senha;
   }
+
 
 }
