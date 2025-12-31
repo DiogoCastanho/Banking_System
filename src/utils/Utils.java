@@ -3,88 +3,58 @@ package src.utils;
 import java.util.Scanner;
 
 public class Utils {
-  public static final String RESET = "\u001B[0m";
-  public static final String VERMELHO = "\u001B[31m";
-  public static final String VERDE = "\u001B[32m";
-  public static final String AMARELO = "\u001B[33m";
 
-  
-  public static void limparTela() {
-    /* \033[H → move o cursor para o canto superior esquerdo
-    \033[2J → limpa a tela */
-    System.out.print("\033[H\033[2J");
-    System.out.flush();
+    public static final String RESET = "\u001B[0m";
+    public static final String VERMELHO = "\u001B[31m";
+    public static final String VERDE = "\u001B[32m";
+    public static final String AMARELO = "\u001B[33m";
 
-  }
+    // ================= UI =================
 
-  public static void erro(String mensagem) {
-    System.out.println(VERMELHO + mensagem + RESET);
-  }
+    public static void limparTela() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
 
-  public static void sucesso(String mensagem) {
-      System.out.println(VERDE + mensagem + RESET);
-  }
+    public static void erro(String mensagem) {
+        System.out.println(VERMELHO + mensagem + RESET);
+    }
 
-  public static void aviso(String mensagem) {
-      System.out.println(AMARELO + mensagem + RESET);
-  }
+    public static void sucesso(String mensagem) {
+        System.out.println(VERDE + mensagem + RESET);
+    }
 
-  // client validations when user want create a client
-  public static String lerNome(Scanner sc) {
-    String nome;
-    do {
-      System.out.print("Nome: ");
-      nome = sc.nextLine();
+    public static void aviso(String mensagem) {
+        System.out.println(AMARELO + mensagem + RESET);
+    }
 
-      if (nome.isBlank()) {
-          erro("Erro: O nome não pode estar vazio.");
-      }
-    } while(nome.isBlank());
+    // ================= INPUT =================
 
-    return nome;
-  }
+    public static String lerTextoObrigatorio(Scanner sc, String mensagem) {
+        String texto;
+        do {
+            System.out.print(mensagem);
+            texto = sc.nextLine().trim();
 
-  public static String lerNif(Scanner sc) {
-    String nif;
-    do {
-      System.out.print("NIF: ");
-      nif = sc.nextLine();
+            if (texto.isEmpty()) {
+                erro("Este campo não pode estar vazio.");
+            }
+        } while (texto.isEmpty());
 
-     if (!nif.matches("\\d{9}")) {
-        erro("Erro: O NIF tem de ter exatamente 9 números.");
-      }
-    } while (!nif.matches("\\d{9}"));
-    
-    return nif;
-  }
+        return texto;
+    }
 
-  public static String lerUtiizador(Scanner sc) {
-    String utilizador;
-    do {
-      System.out.print("Nome de utilizador: ");
-      utilizador = sc.next();
+    public static String lerSenha(Scanner sc, String mensagem) {
+        String senha;
+        do {
+            System.out.print(mensagem);
+            senha = sc.nextLine().trim();
 
-     if (utilizador.isBlank()) {
-        erro("Erro: O nome de utilizador não pode estar vazio.");
-      }
-    } while (utilizador.isBlank());
-    
-    return utilizador;
-  }
+            if (senha.isEmpty()) {
+                erro("A palavra-passe não pode estar vazia.");
+            }
+        } while (senha.isEmpty());
 
-  public static String lerPalavraP(Scanner sc) {
-    String senha;
-    do {
-      System.out.print("Palavra-passe (mín. 4 caracteres): ");
-      senha = sc.next();
-
-      if (senha.length() < 4) {
-        erro("Erro: Palavra-passe demasiado curta.");
-      }
-      } while (senha.length() < 4);
-
-      return senha;
-  }
-
-
+        return senha;
+    }
 }

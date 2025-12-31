@@ -1,9 +1,8 @@
 package src.menus;
 
 import src.Banco;
-import src.Cartao;
 import src.Cliente;
-import src.Conta;
+import src.repository.*;
 
 import java.util.*;
 import src.utils.*;
@@ -11,14 +10,12 @@ import src.utils.*;
 public class menuBanco {
 
     public static void showMenuBanco() {
-        // Criar banco
         Banco banco = new Banco("Banco do mell");
         Scanner sc = new Scanner(System.in);
 
-        // Primeiro, pedir login de admin
         if (!loginAdmin(sc)) {
             System.out.println("Login falhou. A sair...");
-            return; // Sai do método se login falhar
+            return;
         }
 
         int opcao;
@@ -47,27 +44,35 @@ public class menuBanco {
 
             switch (opcao) {
                 case 1:
-                    System.out.println("\n== Criar Cliente");
-                    String nome = Utils.lerNome(sc);
-                    String nif = Utils.lerNif(sc);
-                    String utilizador = Utils.lerUtiizador(sc);
-                    String senha = Utils.lerPalavraP(sc);
+                    ClienteService clienteService = new ClienteService(banco);
 
-                    Cartao newCartao = new Cartao(
-                        Gerador.gerarNumeroCartao(),
-                        Gerador.gerarValidade(),
-                        Gerador.gerarCVV(),
-                        Gerador.gerarPIN()
-                    );
-                    Conta newConta = new Conta(newCartao, Gerador.gerarIBAN(), 0, null);
-                    Cliente newcliente = new Cliente(nome, nif, utilizador, senha, newConta);
-                    banco.criarCliente(newcliente);
-                    System.out.println(newcliente.toString());
-                    Utils.sucesso("Cliente criado com sucesso");
+                    System.out.println("\n== Criar Cliente");
+
+                    String nome = Utils.lerTextoObrigatorio(sc, "Nome: ");
+                    String nif = Utils.lerTextoObrigatorio(sc, "NIF: ");
+                    String utilizador = Utils.lerTextoObrigatorio(sc, "Utilizador: ");
+                    String senha = Utils.lerSenha(sc, "Palavra-passe: ");
+
+                    try {
+                        Cliente cliente = clienteService.criarCliente(
+                                nome, nif, utilizador, senha
+                        );
+
+                        System.out.println("\nConta Associada:\n" + cliente.getConta());
+                        Utils.sucesso("Cliente criado com sucesso!");
+
+                    } catch (IllegalArgumentException e) {
+                        Utils.erro(e.getMessage());
+                    }
                     break;
                 case 2:
+                    ClienteCSVRepository clienteRepository = new ClienteCSVRepository();
+                    List<Cliente> clientes = clienteRepository.listarClientes("clientes.csv");
                     System.out.println("\n== Listar Clientes");
-                    banco.listarClientes();
+                    for (Cliente c : clientes) {
+                        System.out.println(c);
+                    }
+                    
                     break;
                 case 3:
                     System.out.println("\n== Editar Cliente");
@@ -102,17 +107,17 @@ public class menuBanco {
         final String ADMIN_USER = "admin";
         final String ADMIN_PASS = "admin";
 
-        System.out.println("\n=== Login Admin ===");
-        System.out.print("User: ");
+        System.out.println("\n=== Login ===");
+        System.out.print("Utilizador: ");
         String user = sc.nextLine();
-        System.out.print("Password: ");
+        System.out.print("Palavra-passe: ");
         String pass = sc.nextLine();
 
         if (user.equals(ADMIN_USER) && pass.equals(ADMIN_PASS)) {
             Utils.sucesso("Login bem-sucedido!");
             return true;
         } else {
-            System.out.println("User ou password incorretos!");
+            Utils.erro("User ou password incorretos!");
             return false;
         }
     }

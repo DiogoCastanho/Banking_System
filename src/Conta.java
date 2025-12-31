@@ -28,4 +28,15 @@ public class Conta {
 
   // public void listarMovimentos() {}
 
+  @Override
+  public String toString() {
+      String ibanMascarado = iban.substring(0, 4) + "*************" +
+                            iban.substring(iban.length() - 4);
+
+      return "IBAN: " + ibanMascarado +
+            "\nTipo de Conta: " + tipoconta +
+            "\nSaldo: " + String.format("%.2f €", saldo) +
+            "\n" + cartao;
+  }
+
 }

@@ -9,6 +9,7 @@ public class Cliente {
     private String nif;
     private String utilizador;
     private String senha;
+    private Conta conta;
     private ArrayList<Conta> contas;
 
 
@@ -19,6 +20,7 @@ public class Cliente {
         this.contas = new ArrayList<>();
         this.utilizador = utilizador;
         this.senha = senha;
+        this.conta = conta;
     }
 
     // getters
@@ -27,6 +29,7 @@ public class Cliente {
     public ArrayList<Conta> getContas() { return contas; }
     public String getUtilizador() { return utilizador; }
     public String getSenha() { return senha; }
+    public Conta getConta() { return conta; }
 
     // using only to create a new account for the existing client in system (savings account)
     public void criarConta(String numero, LocalDate validade, int cvv, int pin, String iban, double saldo, TipoContaEnum tipoconta) {
@@ -41,6 +44,15 @@ public class Cliente {
         contas.remove(conta);
     }
 
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "nome='" + nome + '\'' +
+                ", nif='" + nif + '\'' +
+                ", utilizador='" + utilizador + '\'' +
+                ", senha='" + senha + '\'' +
+                '}';
+    }
 
 
 }

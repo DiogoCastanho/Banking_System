@@ -21,4 +21,13 @@ public class Cartao {
     public LocalDate getValidade() { return validade; }
     public int getCvv() { return cvv; }
     public int getPin() { return pin; }
+
+    @Override
+        public String toString() {
+            String ultimos4 = numero.substring(numero.length() - 4);
+
+            return "Cartão: **** **** **** " + ultimos4 +
+                " | Validade: " + validade.getMonthValue() + "/" + validade.getYear();
+        }
+
 }
