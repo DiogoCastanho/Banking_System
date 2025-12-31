@@ -12,7 +12,7 @@ public class menuWebBanking {
 
       do {
           Utils.limparTela();
-          System.out.println("\n=== Menu WebBanking ===");
+          System.out.println("\n--- Menu WebBanking ---");
           System.out.println("1 - Levantar dinheiro");
           System.out.println("2 - Consultar saldo");
           System.out.println("3 - Consultar movimentos");
