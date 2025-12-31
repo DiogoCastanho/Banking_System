@@ -44,7 +44,7 @@ public class menuBanco {
 
             switch (opcao) {
                 case 1:
-                    ClienteService clienteService = new ClienteService(banco);
+                    ClienteService clienteService = new ClienteService();
 
                     System.out.println("\n== Criar Cliente");
 

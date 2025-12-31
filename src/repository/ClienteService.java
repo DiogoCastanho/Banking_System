@@ -4,19 +4,11 @@ import src.Cliente;
 import src.Conta;
 import src.Banco;
 import src.Cartao;
-import src.repository.ClienteCSVRepository;
 import src.utils.Gerador;
-import java.util.*;
 
 public class ClienteService {
 
     private ClienteCSVRepository repository = new ClienteCSVRepository();
-    private Banco banco;
-
-    // construtor
-    public ClienteService(Banco banco) {
-        this.banco = banco;
-    }
 
     public Cliente criarCliente(
             String nome,
@@ -66,8 +58,4 @@ public class ClienteService {
 
         return cliente;
     }
-
-    // public List<Cliente> listarClientes() {
-    //   return banco.getClientes();
-    // }
 }
