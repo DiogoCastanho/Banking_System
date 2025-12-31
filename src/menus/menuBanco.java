@@ -1,7 +1,7 @@
 package src.menus;
 
-import src.Banco;
-import src.Cliente;
+import src.models.Banco;
+import src.models.Cliente;
 import src.repository.*;
 
 import java.util.*;
@@ -66,12 +66,12 @@ public class menuBanco {
                     }
                     break;
                 case 2:
-                    ClienteCSVRepository clienteRepository = new ClienteCSVRepository();
-                    List<Cliente> clientes = clienteRepository.listarClientes("clientes.csv");
-                    System.out.println("\n== Listar Clientes");
-                    for (Cliente c : clientes) {
-                        System.out.println(c);
-                    }
+                    // ClienteCSVRepository clienteRepository = new ClienteCSVRepository();
+                    // List<Cliente> clientes = clienteRepository.listarClientes("clientes.csv");
+                    // System.out.println("\n== Listar Clientes");
+                    // for (Cliente c : clientes) {
+                    //     System.out.println(c);
+                    // }
                     
                     break;
                 case 3:

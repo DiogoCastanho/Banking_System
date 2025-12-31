@@ -1,4 +1,4 @@
-package src;
+package src.models;
 import java.util.*;
 
 public class Banco extends CanalAcesso {

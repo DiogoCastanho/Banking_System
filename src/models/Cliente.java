@@ -1,4 +1,4 @@
-package src;
+package src.models;
 
 import java.util.*;
 import java.time.LocalDate;
@@ -44,7 +44,7 @@ public class Cliente {
         contas.remove(conta);
     }
 
-    public String toString() {
+    public String toCsv() {
         return nome + ", " + nif + ", " + utilizador;
     }
 

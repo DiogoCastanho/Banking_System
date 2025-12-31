@@ -1,9 +1,8 @@
 package src.repository;
 
-import src.Cliente;
-import src.Conta;
-import src.Banco;
-import src.Cartao;
+import src.models.Cliente;
+import src.models.Conta;
+import src.models.Cartao;
 import src.utils.Gerador;
 
 public class ClienteService {

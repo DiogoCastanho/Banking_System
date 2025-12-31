@@ -1,4 +1,4 @@
-package src;
+package src.models;
 
 public enum TipoContaEnum {
   CONTA_ORDEM("Conta Ordem"),
