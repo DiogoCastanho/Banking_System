@@ -4,6 +4,7 @@ import java.util.*;
 import src.menus.menuAtm;
 import src.menus.menuBanco;
 import src.menus.menuWebBanking;
+import src.ui.ConsolaUi;
 
 public class Main {
   public static void main(String[] args) {
@@ -12,12 +13,14 @@ public class Main {
     int opcao;
 
     do {
-      System.out.println("=== Sistema Bancário ===");
+      ConsolaUi.titulo("Sistema Bancário");
       System.out.println("1 - Banco");
       System.out.println("2 - Atm");
       System.out.println("3 - WebBanking");
       System.out.println("0 - Sair");
-      System.out.print("Opção: ");
+
+      ConsolaUi.linha();
+      System.out.print("Escolha uma opção: ");
 
       opcao = sc.nextInt();
 

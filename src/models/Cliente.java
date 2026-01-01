@@ -1,7 +1,6 @@
 package src.models;
 
 import java.util.*;
-import java.time.LocalDate;
 
 public class Cliente {
 
@@ -31,11 +30,6 @@ public class Cliente {
     public String getSenha() { return senha; }
     public Conta getConta() { return conta; }
 
-    // using only to create a new account for the existing client in system (savings account)
-    public void criarConta(String numero, LocalDate validade, int cvv, int pin, String iban, double saldo, TipoContaEnum tipoconta) {
-        contas.add(new Conta(new Cartao(numero, validade, cvv, pin), iban, saldo, tipoconta));
-    }
-
     public ArrayList<Conta> listarContas() {
         return contas;
     }
@@ -44,9 +38,38 @@ public class Cliente {
         contas.remove(conta);
     }
 
-    public String toCsv() {
-        return nome + ", " + nif + ", " + utilizador;
+    public String resumo() {
+        return String.format(
+            "Nome: %-10s| NIF: %-9s | Utilizador: %s",
+            nome,
+            nif,
+            utilizador
+        );
     }
 
+    @Override
+    public String toString() {
+        return resumo();
+    }
+
+    public String toStringDetalhes() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("----------------------------------------\n");
+        sb.append("Cliente\n");
+        sb.append("----------------------------------------\n");
+        sb.append("Nome        : ").append(nome).append("\n");
+        sb.append("NIF         : ").append(nif).append("\n");
+        sb.append("Utilizador  : ").append(utilizador).append("\n");
+
+        sb.append("----------------------------------------\n");
+
+        return sb.toString();
+
+    }
+
+    public String toCsv() {
+        return nome + "," + nif + "," + utilizador + "," + senha;
+    }
 
 }

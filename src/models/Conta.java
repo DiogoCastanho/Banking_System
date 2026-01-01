@@ -4,18 +4,20 @@ import java.util.ArrayList;
 
 public class Conta {
   
-  protected Cartao cartao;
   protected String iban;
+  protected String nifCliente;
   protected double saldo;
   protected TipoContaEnum tipoconta;
   protected ArrayList<Movimento> movimentos;
+  protected Cartao cartao;
 
   // construtor
-  public Conta(Cartao cartao, String iban, double saldo, TipoContaEnum tipoconta) {
-    this.cartao = cartao;
+  public Conta(String iban, String nifCliente, double saldo, TipoContaEnum tipoconta, Cartao cartao) {
     this.iban   = iban;
+    this.nifCliente = nifCliente;
     this.saldo  = saldo;
     this.tipoconta = tipoconta;
+    this.cartao = cartao;
     this.movimentos = new ArrayList<>();
   }
 
@@ -23,6 +25,7 @@ public class Conta {
   public Cartao getCartao() { return cartao; }
   public String getIban() { return iban; }
   public double getSaldo() { return saldo; }
+  public TipoContaEnum getTipoConta() { return tipoconta; }
 
   // public void tranferirEntreContas(Conta contaDestino, valor){}
 
@@ -37,6 +40,10 @@ public class Conta {
             "\nTipo de Conta: " + tipoconta +
             "\nSaldo: " + String.format("%.2f €", saldo) +
             "\n" + cartao;
+  }
+
+  public String toCsv() {
+        return iban + "," + nifCliente + ","+ cartao.getNumero() + "," + cartao.getValidade() + "," + cartao.getCvv() + "," + cartao.getPin() + "," + saldo + "," + tipoconta;
   }
 
 }

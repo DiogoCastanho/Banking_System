@@ -2,12 +2,11 @@ package src.repository;
 
 import src.models.Cliente;
 import src.models.Conta;
-import src.models.Cartao;
-import src.utils.Gerador;
 
 public class ClienteService {
 
-    private ClienteCSVRepository repository = new ClienteCSVRepository();
+    private ClienteCSVRepository Clienterepository = new ClienteCSVRepository();
+    private ContaService contaService = new ContaService();
 
     public Cliente criarCliente(
             String nome,
@@ -29,20 +28,7 @@ public class ClienteService {
         //     throw new IllegalArgumentException("Cliente já existe");
         // }
 
-        // gera dados do cartão automaticamente
-        Cartao cartao = new Cartao(
-                Gerador.gerarNumeroCartao(),
-                Gerador.gerarValidade(),
-                Gerador.gerarCVV(),
-                Gerador.gerarPIN()
-        );
-
-        Conta conta = new Conta(
-                cartao,
-                Gerador.gerarIBAN(),
-                0,
-                null
-        );
+        Conta conta = contaService.criarContaDefault(nif);
 
         Cliente cliente = new Cliente(
                 nome,
@@ -53,7 +39,7 @@ public class ClienteService {
         );
 
         // guardar o cliente
-        repository.salvar(cliente);
+        Clienterepository.salvar(cliente);
 
         return cliente;
     }

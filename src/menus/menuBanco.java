@@ -2,51 +2,56 @@ package src.menus;
 
 import src.models.Banco;
 import src.models.Cliente;
+import src.models.Conta;
 import src.repository.*;
 
 import java.util.*;
 import src.utils.*;
+import src.ui.ConsolaUi;
 
 public class menuBanco {
 
     public static void showMenuBanco() {
         Banco banco = new Banco("Banco do mell");
+        ClienteService clienteService = new ClienteService(); // used by create client section
+        ContaService contaService = new ContaService(); // used by create additional account
         Scanner sc = new Scanner(System.in);
 
         if (!loginAdmin(sc)) {
-            System.out.println("Login falhou. A sair...");
+            Utils.erro("Login falhou. A sair...");
             return;
         }
 
         int opcao;
         do {
             Utils.limparTela();
-            System.out.println("\n--- Menu Banco ---");
+            ConsolaUi.titulo("Menu Banco");
 
-            System.out.println("\n=== Gestão de Clientes ===");
+            ConsolaUi.titulo("Gestão de Clientes");
             System.out.println("1 - Criar Cliente");
             System.out.println("2 - Listar Clientes");
             System.out.println("3 - Editar Cliente");
             System.out.println("4 - Remover Cliente");
 
-            System.out.println("\n=== Gestão de Contas ===");
+            ConsolaUi.secao("Gestão de Contas");
             System.out.println("5 - Criar Conta");
             System.out.println("6 - Listar Contas");
             System.out.println("7 - Remover Cliente");
 
-            System.out.println("\n=== Cartões e Acessos ===");
+            ConsolaUi.secao("Cartões e Acessos");
             System.out.println("8 - Desbloquear Cartão (ATM)");
             System.out.println("0 - Logout");
-            System.out.print("Opção: ");
+
+            ConsolaUi.linha();
+            System.out.print("Escolha uma opção: ");
 
             opcao = sc.nextInt();
             sc.nextLine(); // limpar buffer
-
+            
             switch (opcao) {
                 case 1:
-                    ClienteService clienteService = new ClienteService();
 
-                    System.out.println("\n== Criar Cliente");
+                    ConsolaUi.titulo("Criar Cliente");
 
                     String nome = Utils.lerTextoObrigatorio(sc, "Nome: ");
                     String nif = Utils.lerTextoObrigatorio(sc, "NIF: ");
@@ -61,18 +66,19 @@ public class menuBanco {
                         System.out.println("\nConta Associada:\n" + cliente.getConta());
                         Utils.sucesso("Cliente criado com sucesso!");
 
+                        ConsolaUi.pausa(sc);
+
                     } catch (IllegalArgumentException e) {
                         Utils.erro(e.getMessage());
                     }
                     break;
                 case 2:
-                    // ClienteCSVRepository clienteRepository = new ClienteCSVRepository();
-                    // List<Cliente> clientes = clienteRepository.listarClientes("clientes.csv");
-                    // System.out.println("\n== Listar Clientes");
-                    // for (Cliente c : clientes) {
-                    //     System.out.println(c);
-                    // }
-                    
+                    ClienteCSVRepository clienteRepository = new ClienteCSVRepository();
+                    List<Cliente> clientes = clienteRepository.listarClientes("clientes.csv");
+                    System.out.println("\n== Lista de Clientes");
+                    clientes.forEach(c -> System.out.println(c.toString()));
+
+                    ConsolaUi.pausa(sc);
                     break;
                 case 3:
                     System.out.println("\n== Editar Cliente");
@@ -81,7 +87,28 @@ public class menuBanco {
                     System.out.println("\n== Remover Cliente");
                     break;
                 case 5:
-                    System.out.println("\n== Criar Conta");
+
+                    ConsolaUi.titulo("Criar Conta Adicional");
+
+                    String nifCliente = Utils.lerTextoObrigatorio(sc, "Introduza o NIF do cliente: ");
+
+                    try {
+                        Conta conta = contaService.criarContaAdicional(nifCliente);
+
+                        if (conta == null) {
+                            Utils.erro("Erro ao criar conta adicional");
+                        } else {
+                            System.out.println("\nConta criada:\n" + conta);
+                            Utils.sucesso("Conta adicional criada com sucesso!");
+
+                            ConsolaUi.pausa(sc);
+                        }
+
+                        
+
+                    } catch (IllegalArgumentException e) {
+                        Utils.erro(e.getMessage());
+                    }
                     break;
                 case 6:
                     System.out.println("\n== Listar Contas");
@@ -107,7 +134,7 @@ public class menuBanco {
         final String ADMIN_USER = "admin";
         final String ADMIN_PASS = "admin";
 
-        System.out.println("\n=== Login ===");
+        ConsolaUi.titulo("Login");
         System.out.print("Utilizador: ");
         String user = sc.nextLine();
         System.out.print("Palavra-passe: ");
@@ -117,7 +144,7 @@ public class menuBanco {
             Utils.sucesso("Login bem-sucedido!");
             return true;
         } else {
-            Utils.erro("User ou password incorretos!");
+            Utils.erro("Utilizador ou palavra-passe incorretos!");
             return false;
         }
     }
