@@ -30,6 +30,22 @@ public class ContaCSVRepository {
     }
 
     public static List<Conta> listarContas(String caminhoArquivo) {
+<<<<<<< HEAD
+        List<Conta> contas = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(","); // separar campos
+                if (dados.length == 5) { // verificar se tem todos os campos
+                    Conta conta = new Conta(dados[0], dados[1], 0, null, null);
+                    contas.add(conta);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return contas;
+=======
       List<Conta> contas = new ArrayList<>();
       try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
           String linha;
@@ -59,5 +75,6 @@ public class ContaCSVRepository {
            .filter(co -> co.getCartao().getPin() == pin)
            .findFirst()
            .orElse(null);
+>>>>>>> 8bb6ffbabe7a4cff56549e7c502576301264a1fe
     }
 }

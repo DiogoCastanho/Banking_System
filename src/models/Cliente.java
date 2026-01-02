@@ -30,13 +30,11 @@ public class Cliente {
     public String getSenha() { return senha; }
     public Conta getConta() { return conta; }
 
-    public ArrayList<Conta> listarContas() {
-        return contas;
-    }
+    // setters
+    public void setNome(String nome) { this.nome = nome; }
+    public void setUtilizador(String utilizador) { this.utilizador = utilizador; }
+    public void setSenha(String senha) { this.senha = senha; }
 
-    public void removerConta(Conta conta) {
-        contas.remove(conta);
-    }
 
     public String resumo() {
         return String.format(
@@ -56,13 +54,13 @@ public class Cliente {
         StringBuilder sb = new StringBuilder();
 
         sb.append("----------------------------------------\n");
-        sb.append("Cliente\n");
+        sb.append("Dados do Cliente\n");
         sb.append("----------------------------------------\n");
         sb.append("Nome        : ").append(nome).append("\n");
         sb.append("NIF         : ").append(nif).append("\n");
         sb.append("Utilizador  : ").append(utilizador).append("\n");
-
-        sb.append("----------------------------------------\n");
+        sb.append("Senha       : ").append(senha).append("\n");
+        sb.append("----------------------------------------");
 
         return sb.toString();
 

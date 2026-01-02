@@ -28,8 +28,6 @@ public class Utils {
         System.out.println(AMARELO + mensagem + RESET);
     }
 
-    // ================= INPUT =================
-
     public static String lerTextoObrigatorio(Scanner sc, String mensagem) {
         String texto;
         do {
@@ -44,6 +42,22 @@ public class Utils {
         return texto;
     }
 
+    public static String lerTextoParaAtualizarCliente(Scanner sc, String mensagem, String valorAtual) {
+        String texto;
+
+        System.out.print(mensagem);
+        texto = sc.nextLine().trim();
+
+        if (texto.isBlank()) {
+            aviso("Mantido");
+            return valorAtual;
+        }
+
+        sucesso("Atualizado");
+        return texto;
+        
+    }
+
     public static String lerSenha(Scanner sc, String mensagem) {
         String senha;
         do {
@@ -56,5 +70,21 @@ public class Utils {
         } while (senha.isEmpty());
 
         return senha;
+    }
+
+    public static String lerSenhaParaAtualizarCliente(Scanner sc, String mensagem, String valorAtual) {
+        String senha;
+        
+        System.out.print(mensagem);
+        senha = sc.nextLine().trim();
+
+        if (senha.isBlank()) {
+            aviso("Mantida");
+            return valorAtual;
+        }
+
+        sucesso("Atualizada");
+        return senha;
+
     }
 }

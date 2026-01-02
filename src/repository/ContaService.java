@@ -49,7 +49,7 @@ public class ContaService {
             return null;
         }
 
-        Utils.sucesso("Cliente encontrado: " + cliente.getNome());
+        Utils.sucesso("Cliente encontrado: " + cliente.getNome() + " " + cliente.getUtilizador());
 
         System.out.println("Escolha o tipo de conta:");
         System.out.println("1 - Conta Ordem");
