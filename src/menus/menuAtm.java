@@ -13,7 +13,8 @@ public class menuAtm {
 
   public static void showMenuAtm() {
     Banco banco = new Banco("Banco do Mell");
-    ATM atm = new ATM("ATM do " + banco);
+    ContaCSVRepository conta = new ContaCSVRepository();
+    // ATM atm = new ATM("ATM do " + banco);
     Scanner sc = new Scanner(System.in);
 
     if (!login(sc)) {
@@ -23,7 +24,7 @@ public class menuAtm {
     int opcao;
     do {
         Utils.limparTela();
-        ConsolaUi.titulo("Menu ATM");
+        ConsolaUi.titulo("Menu ATM "+ banco.getNome());
         System.out.println("1 - Consultar Saldo");
         System.out.println("2 - Levantar dinheiro");
         System.out.println("3 - Transferir dinheiro");
@@ -38,10 +39,8 @@ public class menuAtm {
 
         switch (opcao) {
           case 1:
-            ContaCSVRepository contaRepository = new ContaCSVRepository();
-            List<Conta> contas = contaRepository.listarContas("contas.csv");
             ConsolaUi.titulo("Saldo");
-            System.out.println("Saldo: " + contas.get(0).getSaldo());
+            System.out.println("Saldo: " + src.utils.Session.getCurrentConta().getSaldo());
             ConsolaUi.pausa(sc);
             break;
           case 2:
@@ -76,11 +75,13 @@ public class menuAtm {
 
     ContaCSVRepository contaRepo = new ContaCSVRepository();
     if(contaRepo.buscarCartao(n_cartao, Integer.parseInt(pin)) != null) {
+      Conta conta = contaRepo.buscarCartao(n_cartao, Integer.parseInt(pin));
+      src.utils.Session.setCurrentConta(conta);
       Utils.sucesso("Login bem-sucedido!");
       ConsolaUi.pausa(sc);
         return true;
     } else {
-      Utils.erro("Utilizador ou palavra-passe incorretos!");
+      Utils.erro("Nº Cartão ou pin incorretos!");
       return false;
     }
   }

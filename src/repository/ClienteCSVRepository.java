@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import src.utils.*;
 
-import javax.management.RuntimeErrorException;
-
-
 public class ClienteCSVRepository {
 
     private static final String ficheiro = "clientes.csv";
