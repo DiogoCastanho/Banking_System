@@ -5,6 +5,7 @@ import src.menus.menuAtm;
 import src.menus.menuBanco;
 import src.menus.menuWebBanking;
 import src.ui.ConsolaUi;
+import src.utils.*;
 
 public class Main {
   public static void main(String[] args) {
@@ -34,8 +35,11 @@ public class Main {
         case 3:
           menuWebBanking.showMenuWebBanking();
           break;
+        case 0:
+          System.err.println("A sair...");
+          break;
         default:
-          System.out.println("Opção inválida!");
+          Utils.erro("Opção inválida!");
           break;
       }
 

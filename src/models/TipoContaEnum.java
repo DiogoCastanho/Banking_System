@@ -14,6 +14,16 @@ public enum TipoContaEnum {
     return nome;  
   }
 
+  //converter de String para TipoContaEnum
+  public static TipoContaEnum fromNome(String nome) {
+        for (TipoContaEnum tipo : values()) {
+            if (tipo.nome.equalsIgnoreCase(nome.trim())) {
+                return tipo;
+            }
+        }
+        throw new IllegalArgumentException("Tipo de conta inválido: " + nome);
+    }
+
   @Override
   public String toString() {
     return nome;

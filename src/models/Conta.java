@@ -43,7 +43,7 @@ public class Conta {
   }
 
   public String toCsv() {
-        return iban + "," + nifCliente + ","+ cartao.getNumero() + "," + cartao.getValidade() + "," + cartao.getCvv() + "," + cartao.getPin() + "," + saldo + "," + tipoconta;
+        return iban + "," + nifCliente + "," + saldo + "," + tipoconta + "," + cartao.getNumero() + "," + cartao.getValidade() + "," + cartao.getCvv() + "," + cartao.getPin();
   }
 
 }
