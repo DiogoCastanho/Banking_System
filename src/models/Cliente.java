@@ -1,0 +1,75 @@
+package src.models;
+
+import java.util.*;
+
+public class Cliente {
+
+    private String nome;
+    private String nif;
+    private String utilizador;
+    private String senha;
+    private Conta conta;
+    private ArrayList<Conta> contas;
+
+
+    // construtor
+    public Cliente(String nome, String nif, String utilizador, String senha, Conta conta) {
+        this.nome = nome;
+        this.nif = nif;
+        this.contas = new ArrayList<>();
+        this.utilizador = utilizador;
+        this.senha = senha;
+        this.conta = conta;
+    }
+
+    // getters
+    public String getNome() { return nome; }
+    public String getNif() { return nif; }
+    public ArrayList<Conta> getContas() { return contas; }
+    public String getUtilizador() { return utilizador; }
+    public String getSenha() { return senha; }
+    public Conta getConta() { return conta; }
+
+    public ArrayList<Conta> listarContas() {
+        return contas;
+    }
+
+    public void removerConta(Conta conta) {
+        contas.remove(conta);
+    }
+
+    public String resumo() {
+        return String.format(
+            "Nome: %-10s| NIF: %-9s | Utilizador: %s",
+            nome,
+            nif,
+            utilizador
+        );
+    }
+
+    @Override
+    public String toString() {
+        return resumo();
+    }
+
+    public String toStringDetalhes() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("----------------------------------------\n");
+        sb.append("Cliente\n");
+        sb.append("----------------------------------------\n");
+        sb.append("Nome        : ").append(nome).append("\n");
+        sb.append("NIF         : ").append(nif).append("\n");
+        sb.append("Utilizador  : ").append(utilizador).append("\n");
+
+        sb.append("----------------------------------------\n");
+
+        return sb.toString();
+
+    }
+
+    public String toCsv() {
+        return nome + "," + nif + "," + utilizador + "," + senha;
+    }
+
+}
