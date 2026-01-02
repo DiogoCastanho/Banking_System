@@ -28,7 +28,7 @@ public class menuBanco {
             Utils.limparTela();
             ConsolaUi.titulo("Menu Banco");
 
-            ConsolaUi.titulo("Gestão de Clientes");
+            ConsolaUi.secao("Gestão de Clientes");
             System.out.println("1 - Criar Cliente");
             System.out.println("2 - Listar Clientes");
             System.out.println("3 - Editar Cliente");
@@ -143,7 +143,7 @@ public class menuBanco {
                     List<Conta> contas = contaRepository.listarContas("contas.csv");
                     ConsolaUi.secao("Lista de Contas");
                     contas.forEach(c -> System.out.println(c.toString()));
-
+                    ConsolaUi.pausa(sc);
                     break;
                 case 7:
                     System.out.println("\n== Remover Conta");

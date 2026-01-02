@@ -38,8 +38,8 @@ public class Conta {
 
       return "IBAN: " + ibanMascarado +
             "\nTipo de Conta: " + tipoconta +
-            "\nSaldo: " + String.format("%.2f €", saldo) +
-            "\n" + cartao;
+            "\nSaldo: " + String.format("%.2f EUR", saldo) +
+            "\n" + cartao + "\n";
   }
 
   public String toCsv() {
