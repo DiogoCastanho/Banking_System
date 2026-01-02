@@ -24,9 +24,9 @@ public class ClienteService {
             throw new IllegalArgumentException("Senha muito curta");
         }
 
-        // if (repository.procurarPorNif(nif)) {
-        //     throw new IllegalArgumentException("Cliente já existe");
-        // }
+        if (Clienterepository.buscarPorNif(nif) != null) {
+            throw new IllegalArgumentException("O NIF introduzido já existe.");
+        }
 
         Conta conta = contaService.criarContaDefault(nif);
 
@@ -42,5 +42,26 @@ public class ClienteService {
         Clienterepository.salvar(cliente);
 
         return cliente;
+    }
+
+    public Cliente editarCliente(String nome, String nif, String utilizador, String senha) {
+        Cliente c = new Cliente(nome, nif, utilizador, senha, null);
+
+        if (!c.getNome().equals(nome)) {
+            c.setNome(nome);
+        }
+
+        if (!c.getUtilizador().equals(utilizador)) {
+            c.setUtilizador(utilizador);
+        }
+
+        if (!c.getSenha().equals(senha)) {
+            c.setSenha(senha);
+        }
+
+        Clienterepository.atualizar(c);
+
+        return c;
+
     }
 }

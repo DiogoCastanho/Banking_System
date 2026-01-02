@@ -15,6 +15,7 @@ public class menuBanco {
         Banco banco = new Banco("Banco do mell");
         ClienteService clienteService = new ClienteService(); // used by create client section
         ContaService contaService = new ContaService(); // used by create additional account
+        ClienteCSVRepository clienteRepository = new ClienteCSVRepository();
         Scanner sc = new Scanner(System.in);
 
         if (!loginAdmin(sc)) {
@@ -73,7 +74,6 @@ public class menuBanco {
                     }
                     break;
                 case 2:
-                    ClienteCSVRepository clienteRepository = new ClienteCSVRepository();
                     List<Cliente> clientes = clienteRepository.listarClientes("clientes.csv");
                     System.out.println("\n== Lista de Clientes");
                     clientes.forEach(c -> System.out.println(c.toString()));
@@ -82,6 +82,33 @@ public class menuBanco {
                     break;
                 case 3:
                     System.out.println("\n== Editar Cliente");
+                    
+                    String nifCl = Utils.lerTextoObrigatorio(sc, "Introduza o NIF do cliente: ");
+
+                    try {
+                        Cliente clienteEdit = clienteRepository.buscarPorNif(nifCl);
+
+                        if (clienteEdit == null) {
+                            throw new IllegalArgumentException("Cliente não encontrado.");
+                        } else {
+                            Utils.sucesso("Cliente encontrado");
+                            System.out.println(clienteEdit.toStringDetalhes());
+                            ConsolaUi.pausa(sc);
+
+                            // request is made to the user to change their data
+                            String nomeC = Utils.lerTextoParaAtualizarCliente(sc, "Atualizar nome (ENTER para manter): ", clienteEdit.getNome());
+                            String nifC = Utils.lerTextoParaAtualizarCliente(sc, "*NIF Impossível editar", clienteEdit.getNif());
+                            String utilizadorC = Utils.lerTextoParaAtualizarCliente(sc, "Atualizar utilizador (ENTER para manter): ", clienteEdit.getUtilizador());
+                            String senhaC = Utils.lerSenhaParaAtualizarCliente(sc, "Atualizar senha (ENTER para manter): ",clienteEdit.getSenha());
+                            ConsolaUi.pausa(sc);
+
+                            Cliente clienteAtualizado = clienteService.editarCliente(nomeC, nifC, utilizadorC, senhaC);
+                            ConsolaUi.pausa(sc);
+
+                        }
+                    } catch (IllegalArgumentException e) {
+                        Utils.erro(e.getMessage());
+                    }
                     break;
                 case 4:
                     System.out.println("\n== Remover Cliente");
@@ -111,7 +138,12 @@ public class menuBanco {
                     }
                     break;
                 case 6:
-                    System.out.println("\n== Listar Contas");
+                    ConsolaUi.titulo("Listar Contas");
+                    ContaCSVRepository contaRepository = new ContaCSVRepository();
+                    List<Conta> contas = contaRepository.listarContas("contas.csv");
+                    ConsolaUi.secao("Lista de Contas");
+                    contas.forEach(c -> System.out.println(c.toString()));
+
                     break;
                 case 7:
                     System.out.println("\n== Remover Conta");

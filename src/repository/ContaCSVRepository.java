@@ -25,20 +25,20 @@ public class ContaCSVRepository {
         }
     }
 
-    // public static List<Conta> listarContas(String caminhoArquivo) {
-    //     List<Conta> contas = new ArrayList<>();
-    //     try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
-    //         String linha;
-    //         while ((linha = br.readLine()) != null) {
-    //             String[] dados = linha.split(","); // separar campos
-    //             if (dados.length == 8) { // verificar se tem todos os campos
-    //                 Conta conta = new Conta(dados[0], dados[1], dados[2], null, null);
-    //                 contas.add(conta);
-    //             }
-    //         }
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return contas;
-    // }
+    public static List<Conta> listarContas(String caminhoArquivo) {
+        List<Conta> contas = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(","); // separar campos
+                if (dados.length == 5) { // verificar se tem todos os campos
+                    Conta conta = new Conta(dados[0], dados[1], 0, null, null);
+                    contas.add(conta);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return contas;
+    }
 }
