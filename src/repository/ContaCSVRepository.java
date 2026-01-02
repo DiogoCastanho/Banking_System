@@ -1,7 +1,6 @@
 package src.repository;
 
 import src.models.Cartao;
-import src.models.Cliente;
 import src.models.Conta;
 import src.models.TipoContaEnum;
 

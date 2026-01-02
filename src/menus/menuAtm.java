@@ -8,7 +8,6 @@ import src.repository.*;
 
 import java.util.*;
 import src.utils.*;
-import src.ui.ConsolaUi;
 
 public class menuAtm {
 
