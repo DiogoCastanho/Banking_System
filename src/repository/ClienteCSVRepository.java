@@ -1,7 +1,6 @@
 package src.repository;
 
 import src.models.Cliente;
-import src.models.Conta;
 
 import java.io.*;
 import java.util.ArrayList;
