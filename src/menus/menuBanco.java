@@ -78,6 +78,10 @@ public class menuBanco {
                     System.out.println("\n== Lista de Clientes");
                     clientes.forEach(c -> System.out.println(c.toString()));
 
+                    if (clientes.size() == 0) {
+                        Utils.aviso("Ainda não existem clientes registados");
+                    }
+
                     ConsolaUi.pausa(sc);
                     break;
                 case 3:
@@ -92,7 +96,7 @@ public class menuBanco {
                             throw new IllegalArgumentException("Cliente não encontrado.");
                         } else {
                             Utils.sucesso("Cliente encontrado");
-                            System.out.println(clienteEdit.toStringDetalhes());
+                            System.out.println(clienteEdit.toStringDetalhes(nifCl));
                             ConsolaUi.pausa(sc);
 
                             // request is made to the user to change their data
@@ -112,6 +116,29 @@ public class menuBanco {
                     break;
                 case 4:
                     System.out.println("\n== Remover Cliente");
+                    String nifR = Utils.lerTextoObrigatorio(sc, "Introduza o NIF do cliente: ");
+
+                    try {
+                        Cliente cliente = clienteRepository.buscarPorNif(nifR);
+
+                        Utils.sucesso("Cliente encontrado");
+                        System.out.println(cliente.toStringDetalhes(nifR));
+
+                        String confirmação = Utils.lerTextoObrigatorio(sc, 
+                            "Tem a certeza que deseja remover este cliente? (S/N): ");
+
+                        if (confirmação.equalsIgnoreCase("S")) {
+                            clienteService.removerCliente(nifR);
+                        } else {
+                            Utils.aviso("Operação cancelada.");
+                        }
+
+                        ConsolaUi.pausa(sc);
+
+                    } catch (IllegalArgumentException e) {
+                        Utils.erro(e.getMessage());
+                        ConsolaUi.pausa(sc);
+                    }
                     break;
                 case 5:
 
@@ -139,10 +166,17 @@ public class menuBanco {
                     break;
                 case 6:
                     ConsolaUi.titulo("Listar Contas");
+                    
                     ContaCSVRepository contaRepository = new ContaCSVRepository();
                     List<Conta> contas = contaRepository.listarContas("contas.csv");
+
                     ConsolaUi.secao("Lista de Contas");
                     contas.forEach(c -> System.out.println(c.toString()));
+
+                    if (contas.size() == 0) {
+                        Utils.aviso("Ainda não existem contas registadas");
+                    }
+
                     ConsolaUi.pausa(sc);
                     break;
                 case 7:
@@ -174,9 +208,11 @@ public class menuBanco {
 
         if (user.equals(ADMIN_USER) && pass.equals(ADMIN_PASS)) {
             Utils.sucesso("Login bem-sucedido!");
+            ConsolaUi.pausa(sc);
             return true;
         } else {
             Utils.erro("Utilizador ou palavra-passe incorretos!");
+            ConsolaUi.pausa(sc);
             return false;
         }
     }

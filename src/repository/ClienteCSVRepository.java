@@ -15,7 +15,7 @@ public class ClienteCSVRepository {
     public void salvar(Cliente cliente) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ficheiro, true))) {
             if (novoArquivo) {
-                bw.write("Nome,NIF,Utilizador,Senha");
+                bw.write("Nome,NIF,Utilizador,Senha,RemocaoPendente");
                 bw.newLine();
             }
             bw.write(cliente.toCsv());
@@ -31,7 +31,7 @@ public class ClienteCSVRepository {
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ficheiro))) {
 
-            bw.write("Nome,NIF,Utilizador,Senha");
+            bw.write("Nome,NIF,Utilizador,Senha,RemocaoPendente");
             bw.newLine();
             for (Cliente c : clientes) {
                 
@@ -45,7 +45,7 @@ public class ClienteCSVRepository {
 
             }
 
-            Utils.sucesso("Cliente " + cliente.getNif() + " atualizado");
+            Utils.sucesso("Cliente " + cliente.getUtilizador() + " atualizado");
 
         }catch (IOException e) {
             throw new RuntimeException("Erro ao atualzar cliente");
@@ -60,8 +60,10 @@ public class ClienteCSVRepository {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(",");
-                if (dados.length == 4) {
-                    Cliente cliente = new Cliente(dados[0].trim(), dados[1].trim(), dados[2].trim(), dados[3].trim(), null);
+                if (dados.length == 5) {
+                    boolean remocaoPendente = Boolean.parseBoolean(dados[4].trim());
+
+                    Cliente cliente = new Cliente(dados[0].trim(), dados[1].trim(), dados[2].trim(), dados[3].trim(), remocaoPendente, null);
                     clientes.add(cliente);
                 }
             }
@@ -73,11 +75,29 @@ public class ClienteCSVRepository {
 
 
     public Cliente buscarPorNif(String nif) {
-    return listarClientes(ficheiro)
-           .stream()
-           .filter(c -> c.getNif().trim().equals(nif.trim()))
-           .findFirst()
-           .orElse(null);
+        return listarClientes(ficheiro)
+            .stream()
+            .filter(c -> c.getNif().trim().equals(nif.trim()))
+            .findFirst()
+            .orElse(null);
+    }
+
+    public void removerPorNif(String nif) {
+
+        List<Cliente> clientes = listarClientes(ficheiro);
+
+        List<Cliente> clientesRestantes = clientes.stream()
+            .filter(c -> !c.getNif().trim().equals(nif.trim()))
+            .toList();
+
+        try (PrintWriter pw = new PrintWriter(ficheiro)){
+            for (Cliente c : clientesRestantes) {
+                pw.println(c.toCsv());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao remover cliente pelo nif");
+        }
+
     }
 
 }

@@ -1,12 +1,16 @@
 package src.repository;
 
+import java.util.List;
+import src.utils.*;
+
 import src.models.Cliente;
 import src.models.Conta;
 
 public class ClienteService {
 
-    private ClienteCSVRepository Clienterepository = new ClienteCSVRepository();
+    private ClienteCSVRepository clienteRepository = new ClienteCSVRepository();
     private ContaService contaService = new ContaService();
+    private ContaCSVRepository contaRepository = new ContaCSVRepository();
 
     public Cliente criarCliente(
             String nome,
@@ -24,7 +28,7 @@ public class ClienteService {
             throw new IllegalArgumentException("Senha muito curta");
         }
 
-        if (Clienterepository.buscarPorNif(nif) != null) {
+        if (clienteRepository.buscarPorNif(nif) != null) {
             throw new IllegalArgumentException("O NIF introduzido já existe.");
         }
 
@@ -35,17 +39,18 @@ public class ClienteService {
                 nif,
                 utilizador,
                 senha,
+                false,
                 conta
         );
 
         // guardar o cliente
-        Clienterepository.salvar(cliente);
+        clienteRepository.salvar(cliente);
 
         return cliente;
     }
 
     public Cliente editarCliente(String nome, String nif, String utilizador, String senha) {
-        Cliente c = new Cliente(nome, nif, utilizador, senha, null);
+        Cliente c = new Cliente(nome, nif, utilizador, senha, false, null);
 
         if (!c.getNome().equals(nome)) {
             c.setNome(nome);
@@ -59,9 +64,51 @@ public class ClienteService {
             c.setSenha(senha);
         }
 
-        Clienterepository.atualizar(c);
+        clienteRepository.atualizar(c);
 
         return c;
 
+    }
+
+    public Cliente removerCliente(String nif) {
+
+        if (!nif.matches("\\d{9}")) {
+            throw new IllegalArgumentException("NIF deve ter 9 dígitos");
+        }
+
+        Cliente cliente = clienteRepository.buscarPorNif(nif);
+
+        if (cliente == null) {
+            throw new IllegalArgumentException("Cliente não encontrado");
+        }
+
+        List<Conta> contas = contaRepository.listarContas("contas.csv");
+
+        boolean saldoZero = true;
+
+        for (Conta c : contas) {
+            if (c.getNifCliente().equals(nif)) {
+                if (c.getSaldo() > 0) {
+                    saldoZero = false;
+                    break;
+                }
+            }
+
+        }
+
+        if (saldoZero) {
+            contaRepository.removerPorNifCliente(nif);
+            clienteRepository.removerPorNif(nif);
+            Utils.sucesso("Remoção efetuada com sucesso.");
+
+        } else {
+            cliente.setRemocaoPendente(true);
+            clienteRepository.atualizar(cliente);
+            Utils.aviso("Remoção pendente. Para concluir, levante o saldo existente nas contas através do ATM.");
+        }
+
+
+        return cliente;
+        
     }
 }

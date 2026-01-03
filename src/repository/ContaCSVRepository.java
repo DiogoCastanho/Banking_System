@@ -53,11 +53,29 @@ public class ContaCSVRepository {
     }
 
     public Conta buscarCartao(String numeroCartao, int pin) {
-    return listarContas(ficheiro)
-           .stream()
-           .filter(co -> co.getCartao().getNumero().trim().equals(numeroCartao.trim()))
-           .filter(co -> co.getCartao().getPin() == pin)
-           .findFirst()
-           .orElse(null);
+      return listarContas(ficheiro)
+            .stream()
+            .filter(co -> co.getCartao().getNumero().trim().equals(numeroCartao.trim()))
+            .filter(co -> co.getCartao().getPin() == pin)
+            .findFirst()
+            .orElse(null);
+    }
+
+    public void removerPorNifCliente(String nif) {
+      
+      List<Conta> contas = listarContas(ficheiro);
+
+      List<Conta> contasRestantes = contas.stream()
+            .filter(co -> !co.getNifCliente().trim().equals(nif.trim()))
+            .toList();
+
+      try (PrintWriter pw = new PrintWriter(new FileWriter(ficheiro))) {
+            for (Conta c : contasRestantes) {
+              pw.println(c.toCsv());
+            }
+      } catch (IOException e) {
+          throw new RuntimeException("Erro ao remover contas do cliente.");
+      }
+
     }
 }

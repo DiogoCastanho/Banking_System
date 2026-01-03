@@ -22,10 +22,12 @@ public class Conta {
   }
 
   // getters
-  public Cartao getCartao() { return cartao; }
+  public String getNifCliente() { return nifCliente; }
   public String getIban() { return iban; }
   public double getSaldo() { return saldo; }
   public TipoContaEnum getTipoConta() { return tipoconta; }
+  public Cartao getCartao() { return cartao; }
+
 
   // public void tranferirEntreContas(Conta contaDestino, valor){}
 
