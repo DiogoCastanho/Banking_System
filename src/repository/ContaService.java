@@ -23,7 +23,8 @@ public class ContaService {
                 Gerador.gerarNumeroCartao(),
                 Gerador.gerarValidade(),
                 Gerador.gerarCVV(),
-                Gerador.gerarPIN()
+                Gerador.gerarPIN(),
+                false
         );
 
         Conta conta = new Conta(
@@ -65,7 +66,8 @@ public class ContaService {
                 Gerador.gerarNumeroCartao(),
                 Gerador.gerarValidade(),
                 Gerador.gerarCVV(),
-                Gerador.gerarPIN()
+                Gerador.gerarPIN(),
+                false
         );
 
         Conta conta = new Conta(

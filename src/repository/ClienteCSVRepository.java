@@ -50,13 +50,12 @@ public class ClienteCSVRepository {
         }catch (IOException e) {
             throw new RuntimeException("Erro ao atualzar cliente");
         }
-
-
     }
 
     public static List<Cliente> listarClientes(String caminhoArquivo) {
         List<Cliente> clientes = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
+            String cabecalho = br.readLine();
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(",");

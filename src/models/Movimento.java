@@ -19,7 +19,7 @@ public class Movimento {
     private int ibanDestinatario;
 
     // construtor
-    public Movimento(Date data_hora, float valor, float saldo_apos_operacao, TipoMove tipo_movimento, int ibanDestinatario){
+    public Movimento(Date data_hora, double valor, double saldo_apos_operacao, TipoMove tipo_movimento, int ibanDestinatario){
         this.data_hora = data_hora;
         this.valor = valor;
         this.saldo_apos_operacao = saldo_apos_operacao;
@@ -33,4 +33,15 @@ public class Movimento {
     public double getSaldoPosOp() { return saldo_apos_operacao; }
     public TipoMove getTipoMovimento() { return tipo_movimento; }
     public int getIbanDestinatario() { return ibanDestinatario; }
+
+    public String toString() {
+        return String.format(
+            "Data/Hora: %-20s | Valor: %-10.2f | Saldo Após Operação: %-10.2f | Tipo Movimento: %-12s | IBAN Destinatário: %-10d",
+            data_hora.toString(),
+            valor,
+            saldo_apos_operacao,
+            tipo_movimento.toString(),
+            ibanDestinatario
+        );
+    }
 }
