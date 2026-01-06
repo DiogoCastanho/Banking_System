@@ -15,10 +15,11 @@ public class menuBanco {
         Banco banco = new Banco("Banco do mell");
         ClienteService clienteService = new ClienteService(); // used by create client section
         ContaService contaService = new ContaService(); // used by create additional account
+        ContaCSVRepository contaRepository = new ContaCSVRepository();
         ClienteCSVRepository clienteRepository = new ClienteCSVRepository();
         Scanner sc = new Scanner(System.in);
 
-        if (!loginAdmin(sc)) {
+        if (!loginBanco(sc)) {
             Utils.erro("Login falhou. A sair...");
             return;
         }
@@ -37,7 +38,7 @@ public class menuBanco {
             ConsolaUi.secao("Gestão de Contas");
             System.out.println("5 - Criar Conta");
             System.out.println("6 - Listar Contas");
-            System.out.println("7 - Remover Cliente");
+            System.out.println("7 - Remover Conta");
 
             ConsolaUi.secao("Cartões e Acessos");
             System.out.println("8 - Desbloquear Cartão (ATM)");
@@ -167,7 +168,6 @@ public class menuBanco {
                 case 6:
                     ConsolaUi.titulo("Listar Contas");
                     
-                    ContaCSVRepository contaRepository = new ContaCSVRepository();
                     List<Conta> contas = contaRepository.listarContas("contas.csv");
 
                     ConsolaUi.secao("Lista de Contas");
@@ -181,6 +181,31 @@ public class menuBanco {
                     break;
                 case 7:
                     System.out.println("\n== Remover Conta");
+                    String nifRc = Utils.lerTextoObrigatorio(sc, "Introduza o NIF do cliente: ");
+
+                    try {
+                        List<Conta> contasCliente = contaRepository.buscarContasCliente(nifRc);
+
+                                            
+                        if (contasCliente == null || contasCliente.isEmpty()) {
+                            Utils.aviso("O cliente não possui contas associadas.");
+                            ConsolaUi.pausa(sc);
+                            break;
+                        }
+
+                        // show account
+                        ConsolaUi.mostrarContas(contasCliente, nifRc, sc);
+
+                        // choose the option
+                        Conta contaEscolhida = contaService.escolherConta(contasCliente);
+                        
+                        contaService.buscarContaParaRemover(contaEscolhida);
+                        ConsolaUi.pausa(sc);
+
+                    } catch (Exception e) {
+                        Utils.erro(e.getMessage());
+                    }
+
                     break;
                 case 8:
                     System.out.println("\n== Desbloquear Cartão (ATM)");
@@ -196,9 +221,9 @@ public class menuBanco {
     }
 
     // Login method
-    private static boolean loginAdmin(Scanner sc) {
-        final String ADMIN_USER = "admin";
-        final String ADMIN_PASS = "admin";
+    private static boolean loginBanco(Scanner sc) {
+        final String utilizador = "admin";
+        final String palavraPasse = "admin";
 
         ConsolaUi.titulo("Login");
         System.out.print("Utilizador: ");
@@ -206,7 +231,10 @@ public class menuBanco {
         System.out.print("Palavra-passe: ");
         String pass = sc.nextLine();
 
-        if (user.equals(ADMIN_USER) && pass.equals(ADMIN_PASS)) {
+        ClienteCSVRepository clienteRepo = new ClienteCSVRepository();
+        if (user.equals(utilizador) && pass.equals(palavraPasse) || clienteRepo.buscarInfoCliente(user, pass) != null) {
+            Cliente cliente = clienteRepo.buscarInfoCliente(user, pass);
+            src.utils.Session.setCurrentCliente(cliente);
             Utils.sucesso("Login bem-sucedido!");
             ConsolaUi.pausa(sc);
             return true;

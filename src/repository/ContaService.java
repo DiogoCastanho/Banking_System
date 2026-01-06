@@ -3,7 +3,9 @@ package src.repository;
 import src.models.Cliente;
 import src.models.Conta;
 import src.models.TipoContaEnum;
+import src.ui.ConsolaUi;
 
+import java.util.List;
 import java.util.Scanner;
 
 import src.models.Cartao;
@@ -13,7 +15,7 @@ import src.utils.Utils;
 public class ContaService {
 
     Scanner sc = new Scanner(System.in);
-    private ContaCSVRepository repository = new ContaCSVRepository();
+    private ContaCSVRepository contaRepository = new ContaCSVRepository();
     private ClienteCSVRepository clienteRepository = new ClienteCSVRepository();
 
     public Conta criarContaDefault(String nif) { 
@@ -35,7 +37,7 @@ public class ContaService {
         );
 
         // guardar o cliente
-        repository.salvar(conta);
+        contaRepository.salvar(conta);
 
         return conta;
     }
@@ -77,9 +79,52 @@ public class ContaService {
         );
 
         // guardar o cliente
-        repository.salvar(conta);
+        contaRepository.salvar(conta);
 
         return conta;
+    }
+
+    
+    public Conta escolherConta(List<Conta> contas) {
+        int opcao;
+
+        do {
+            opcao = Utils.lerOpcao(sc, "Escola a conta: ");
+        } while (opcao < 1 || opcao > contas.size());
+
+        return contas.get(opcao - 1);
+    }
+
+    
+    public Conta buscarContaParaRemover(Conta conta) {
+
+        if (!conta.getNifCliente().matches("\\d{9}")) {
+            throw new IllegalArgumentException("NIF deve ter 9 dígitos");
+        }
+
+        List<Conta> contas = contaRepository.listarContas("contas.csv");
+
+        boolean saldoZero = true;
+
+        for (Conta c : contas) {
+            if (c.getCartao().equals(conta.getCartao())) {
+                if (c.getSaldo() > 0) {
+                    saldoZero = false;
+                    break;
+                }
+            }
+
+        }
+
+        if (saldoZero) {
+            contaRepository.removerPorNifCliente(conta.getNifCliente());
+            Utils.sucesso("Remoção efetuada com sucesso.");
+
+        }
+
+
+        return conta;
+        
     }
 
 }

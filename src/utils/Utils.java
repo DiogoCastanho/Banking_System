@@ -42,6 +42,20 @@ public class Utils {
         return texto;
     }
 
+    public static int lerOpcao(Scanner sc, String mensagem) {
+        int opcao;
+        do {
+            System.out.print(mensagem);
+            opcao = sc.nextInt();
+
+            if (opcao < 0) {
+                erro("Campo inválido.");
+            }
+        } while (opcao < 0);
+
+        return opcao;
+    }
+
     public static String lerTextoParaAtualizarCliente(Scanner sc, String mensagem, String valorAtual) {
         String texto;
 

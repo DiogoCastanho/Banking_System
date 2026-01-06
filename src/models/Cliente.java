@@ -12,17 +12,15 @@ public class Cliente {
     private String senha;
     private Conta conta;
     private ArrayList<Conta> contas;
-    private boolean remocaoPendente = false; // used on remove client
 
 
     // construtor
-    public Cliente(String nome, String nif, String utilizador, String senha, boolean remocaoPendente, Conta conta) {
+    public Cliente(String nome, String nif, String utilizador, String senha, Conta conta) {
         this.nome = nome;
         this.nif = nif;
         this.contas = new ArrayList<>();
         this.utilizador = utilizador;
         this.senha = senha;
-        this.remocaoPendente = false;
         this.conta = conta;
     }
 
@@ -33,13 +31,11 @@ public class Cliente {
     public String getUtilizador() { return utilizador; }
     public String getSenha() { return senha; }
     public Conta getConta() { return conta; }
-    public boolean getRemocaoPendente() { return remocaoPendente; }
 
     // setters
     public void setNome(String nome) { this.nome = nome; }
     public void setUtilizador(String utilizador) { this.utilizador = utilizador; }
     public void setSenha(String senha) { this.senha = senha; }
-    public void setRemocaoPendente(boolean remocaoPendente) { this.remocaoPendente = remocaoPendente; }
 
 
     public String resumo() {
@@ -73,7 +69,7 @@ public class Cliente {
     }
 
     public String toCsv() {
-        return nome + "," + nif + "," + utilizador + "," + senha + "," + remocaoPendente;
+        return nome + "," + nif + "," + utilizador + "," + senha;
     }
 
 }
