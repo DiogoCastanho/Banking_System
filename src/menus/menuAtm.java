@@ -82,7 +82,7 @@ public class menuAtm {
             break;
           case 0:
             System.out.println("A voltar...");
-            src.utils.Session.clear();
+            src.utils.Session.clearConta();
             break;
           default:
             System.out.println("Opção inválida!");
@@ -143,41 +143,4 @@ public class menuAtm {
 
     return false;
   }
-  // private static boolean login(Scanner sc) {
-
-  //   int counter = 0;
-  //   do {
-  //   ConsolaUi.titulo("Login");
-
-  //   System.out.print("Nº Cartão: ");
-  //   String n_cartao = sc.nextLine();
-
-  //   System.out.print("Pin: ");
-  //   String pin = sc.nextLine();
-
-  //   ContaCSVRepository contaRepo = new ContaCSVRepository();
-  //   if(contaRepo.buscarCartao(n_cartao, Integer.parseInt(pin)) != null) {
-
-  //     Conta conta = contaRepo.buscarCartao(n_cartao, Integer.parseInt(pin));
-  //     src.utils.Session.setCurrentConta(conta);
-
-  //     Utils.sucesso("Login bem-sucedido!");
-  //     ConsolaUi.pausa(sc);
-  //     return true;
-
-  //   } else {
-  //     Conta conta = contaRepo.buscarCartaoPorNumero(n_cartao);
-  //     src.utils.Session.setCurrentConta(conta);
-  //     Utils.erro("Nº Cartão ou pin incorretos!");
-  //     ConsolaUi.pausa(sc);
-
-  //     counter++;
-  //     if(counter >= 3 && conta != null) {
-  //       src.utils.Session.getCurrentConta().getCartao().bloquearCartao();
-  //       return false;
-  //     }
-  //   }
-  //   } while (counter <= 3);
-  //   return false;
-  // }
 }

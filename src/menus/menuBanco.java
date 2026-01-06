@@ -209,6 +209,12 @@ public class menuBanco {
                     break;
                 case 8:
                     System.out.println("\n== Desbloquear Cartão (ATM)");
+                    String numeroCartao = Utils.lerTextoObrigatorio(sc, "Nº Do Cartão: ");
+                    src.utils.Session.setCurrentConta(contaRepository.buscarCartaoPorNumero(numeroCartao));
+                    System.out.println(src.utils.Session.getCurrentConta().getCartao().toString());
+                    src.utils.Session.getCurrentConta().getCartao().desbloquearCartao();
+                    contaRepository.atualizar(src.utils.Session.getCurrentConta());
+                    ConsolaUi.pausa(sc);
                     break;
                 case 0:
                     System.out.println("A voltar ao menu principal...");

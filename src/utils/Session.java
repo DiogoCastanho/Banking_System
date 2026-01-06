@@ -24,7 +24,11 @@ public class Session {
         currentCliente = cliente;
     }
 
-    // public static void clear() {
-    //     currentConta = null;
-    // }
+    public static void clearConta() {
+        currentConta = null;
+    }
+
+    public static void clearCliente() {
+        currentCliente = null;
+    }
 }
