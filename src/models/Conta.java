@@ -77,13 +77,9 @@ public class Conta {
 
   @Override
   public String toString() {
-      String ibanMascarado = iban.substring(0, 4) + "*************" +
-                            iban.substring(iban.length() - 4);
-
-      return "IBAN: " + ibanMascarado +
+      return "IBAN: " + iban +
             "\nTipo de Conta: " + tipoconta +
-            "\nSaldo: " + String.format("%.2f EUR", saldo) +
-            "\n" + cartao + "\n";
+            "\nSaldo: " + String.format("%.2f EUR", saldo);
   }
 
   public String toCsv() {

@@ -4,6 +4,8 @@ import src.models.Cartao;
 import src.models.Cliente;
 import src.models.Conta;
 import src.models.TipoContaEnum;
+import src.ui.ConsolaUi;
+import src.utils.Utils;
 
 import java.io.*;
 import java.util.*;
@@ -14,6 +16,7 @@ public class ContaCSVRepository {
 
     private static final String ficheiro = "contas.csv";
     boolean novoArquivo = !(new File(ficheiro).exists());
+    Scanner sc = new Scanner(System.in);
 
 
     public void salvar(Conta conta) {
@@ -126,4 +129,12 @@ public class ContaCSVRepository {
       }
 
     }
+
+    public List<Conta> buscarContasCliente(String nif) {
+
+      return listarContas(ficheiro).stream()
+              .filter(c -> c.getNifCliente().trim().equals(nif.trim()))
+              .toList();
+  }
+
 }

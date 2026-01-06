@@ -15,7 +15,7 @@ public class ClienteCSVRepository {
     public void salvar(Cliente cliente) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ficheiro, true))) {
             if (novoArquivo) {
-                bw.write("Nome,NIF,Utilizador,Senha,RemocaoPendente");
+                bw.write("Nome,NIF,Utilizador,Senha");
                 bw.newLine();
             }
             bw.write(cliente.toCsv());
@@ -30,9 +30,7 @@ public class ClienteCSVRepository {
         List<Cliente> clientes = listarClientes(ficheiro);
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ficheiro))) {
-
-            bw.write("Nome,NIF,Utilizador,Senha,RemocaoPendente");
-            bw.newLine();
+            
             for (Cliente c : clientes) {
                 
                 if (c.getNif().equals(cliente.getNif())) {
@@ -59,10 +57,8 @@ public class ClienteCSVRepository {
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(",");
-                if (dados.length == 5) {
-                    boolean remocaoPendente = Boolean.parseBoolean(dados[4].trim());
-
-                    Cliente cliente = new Cliente(dados[0].trim(), dados[1].trim(), dados[2].trim(), dados[3].trim(), remocaoPendente, null);
+                if (dados.length == 4) {
+                    Cliente cliente = new Cliente(dados[0].trim(), dados[1].trim(), dados[2].trim(), dados[3].trim(), null);
                     clientes.add(cliente);
                 }
             }
@@ -77,6 +73,16 @@ public class ClienteCSVRepository {
         return listarClientes(ficheiro)
             .stream()
             .filter(c -> c.getNif().trim().equals(nif.trim()))
+            .findFirst()
+            .orElse(null);
+    }
+
+    // used by login in menu banco
+    public Cliente buscarInfoCliente(String utilizador, String senha) {
+        return listarClientes(ficheiro)
+            .stream()
+            .filter(c -> c.getUtilizador().trim().equals(utilizador.trim()))
+            .filter(c -> c.getSenha().trim().equals(senha.trim()))
             .findFirst()
             .orElse(null);
     }

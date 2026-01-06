@@ -39,7 +39,6 @@ public class ClienteService {
                 nif,
                 utilizador,
                 senha,
-                false,
                 conta
         );
 
@@ -50,7 +49,7 @@ public class ClienteService {
     }
 
     public Cliente editarCliente(String nome, String nif, String utilizador, String senha) {
-        Cliente c = new Cliente(nome, nif, utilizador, senha, false, null);
+        Cliente c = new Cliente(nome, nif, utilizador, senha, null);
 
         if (!c.getNome().equals(nome)) {
             c.setNome(nome);
@@ -101,10 +100,6 @@ public class ClienteService {
             clienteRepository.removerPorNif(nif);
             Utils.sucesso("Remoção efetuada com sucesso.");
 
-        } else {
-            cliente.setRemocaoPendente(true);
-            clienteRepository.atualizar(cliente);
-            Utils.aviso("Remoção pendente. Para concluir, levante o saldo existente nas contas através do ATM.");
         }
 
 
