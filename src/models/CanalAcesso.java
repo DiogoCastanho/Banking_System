@@ -1,4 +1,4 @@
-package src;
+package src.models;
 
 public abstract class CanalAcesso {
 
@@ -6,4 +6,4 @@ public abstract class CanalAcesso {
 
   public abstract void verMovimentos(Conta conta, Cliente cliente);
 
-}
+}    

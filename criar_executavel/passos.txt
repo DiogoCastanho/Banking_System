@@ -1,0 +1,9 @@
+d C:\Users\admin\OneDrive\Desktop\University\1_Semestre\POO\Projeto Final\Banking_Systemc
+
+javac src\Main.java src\menus\*.java src\ui\*.java src\utils\*.java src\models\*.java src\repository\*.java
+
+jar cfe BankingSystem.jar src.Main -C . src
+
+java -jar BankingSystem.jar
+
+colocar o executável.bat na mesma pasta onde esta o Main

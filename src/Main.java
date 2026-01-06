@@ -4,7 +4,8 @@ import java.util.*;
 import src.menus.menuAtm;
 import src.menus.menuBanco;
 import src.menus.menuWebBanking;
-import src.utils.Utils;
+import src.ui.ConsolaUi;
+import src.utils.*;
 
 public class Main {
   public static void main(String[] args) {
@@ -13,12 +14,14 @@ public class Main {
     int opcao;
 
     do {
-      System.out.println("Sistema Bancário");
+      ConsolaUi.titulo("Sistema Bancário");
       System.out.println("1 - Banco");
       System.out.println("2 - Atm");
       System.out.println("3 - WebBanking");
       System.out.println("0 - Sair");
-      System.out.println("\nOpção:");
+
+      ConsolaUi.linha();
+      System.out.print("Escolha uma opção: ");
 
       opcao = sc.nextInt();
 
@@ -32,8 +35,11 @@ public class Main {
         case 3:
           menuWebBanking.showMenuWebBanking();
           break;
+        case 0:
+          System.err.println("A sair...");
+          break;
         default:
-          System.out.println("Opção inválida!");
+          Utils.erro("Opção inválida!");
           break;
       }
 
