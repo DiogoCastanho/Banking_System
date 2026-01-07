@@ -69,10 +69,19 @@ public class ClienteCSVRepository {
     }
 
 
+    // used by search clients with nif
     public Cliente buscarPorNif(String nif) {
         return listarClientes(ficheiro)
             .stream()
             .filter(c -> c.getNif().trim().equals(nif.trim()))
+            .findFirst()
+            .orElse(null);
+    }
+
+    public Cliente buscarClientePorUtilizador(String utilizador) {
+        return listarClientes(ficheiro)
+            .stream()
+            .filter(c -> c.getUtilizador().trim().equals(utilizador.trim()))
             .findFirst()
             .orElse(null);
     }

@@ -19,11 +19,6 @@ public class menuBanco {
         ClienteCSVRepository clienteRepository = new ClienteCSVRepository();
         Scanner sc = new Scanner(System.in);
 
-        if (!loginBanco(sc)) {
-            Utils.erro("Login falhou. A sair...");
-            return;
-        }
-
         int opcao;
         do {
             Utils.limparTela();
@@ -212,7 +207,13 @@ public class menuBanco {
                     String numeroCartao = Utils.lerTextoObrigatorio(sc, "Nº Do Cartão: ");
                     src.utils.Session.setCurrentConta(contaRepository.buscarCartaoPorNumero(numeroCartao));
                     System.out.println(src.utils.Session.getCurrentConta().getCartao().toString());
-                    src.utils.Session.getCurrentConta().getCartao().desbloquearCartao();
+
+                    if (src.utils.Session.getCurrentConta().getCartao().isBloqueado() == true) {
+                        src.utils.Session.getCurrentConta().getCartao().desbloquearCartao();
+                    } else {
+                        Utils.aviso("O cartão apresentado, não se encontra bloqueado.");
+                    }
+
                     contaRepository.atualizar(src.utils.Session.getCurrentConta());
                     ConsolaUi.pausa(sc);
                     break;
@@ -224,30 +225,5 @@ public class menuBanco {
             }
 
         } while (opcao != 0);
-    }
-
-    // Login method
-    private static boolean loginBanco(Scanner sc) {
-        final String utilizador = "admin";
-        final String palavraPasse = "admin";
-
-        ConsolaUi.titulo("Login");
-        System.out.print("Utilizador: ");
-        String user = sc.nextLine();
-        System.out.print("Palavra-passe: ");
-        String pass = sc.nextLine();
-
-        ClienteCSVRepository clienteRepo = new ClienteCSVRepository();
-        if (user.equals(utilizador) && pass.equals(palavraPasse) || clienteRepo.buscarInfoCliente(user, pass) != null) {
-            Cliente cliente = clienteRepo.buscarInfoCliente(user, pass);
-            src.utils.Session.setCurrentCliente(cliente);
-            Utils.sucesso("Login bem-sucedido!");
-            ConsolaUi.pausa(sc);
-            return true;
-        } else {
-            Utils.erro("Utilizador ou palavra-passe incorretos!");
-            ConsolaUi.pausa(sc);
-            return false;
-        }
     }
 }

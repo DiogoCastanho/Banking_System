@@ -1,10 +1,13 @@
 package src.repository;
 
 import java.util.List;
+import java.util.Scanner;
+
 import src.utils.*;
 
 import src.models.Cliente;
 import src.models.Conta;
+import src.ui.ConsolaUi;
 
 public class ClienteService {
 
@@ -30,6 +33,10 @@ public class ClienteService {
 
         if (clienteRepository.buscarPorNif(nif) != null) {
             throw new IllegalArgumentException("O NIF introduzido já existe.");
+        }
+
+        if (clienteRepository.buscarClientePorUtilizador(utilizador) != null) {
+            throw new IllegalArgumentException("O utilizador já existe");
         }
 
         Conta conta = contaService.criarContaDefault(nif);

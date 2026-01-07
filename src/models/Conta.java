@@ -1,6 +1,7 @@
 package src.models;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import src.repository.ContaCSVRepository;
 import src.ui.ConsolaUi;
@@ -33,6 +34,8 @@ public class Conta {
   public Cartao getCartao() { return cartao; }
 
   public void levantarDinheiro(double valor) {
+    Scanner sc = new Scanner(System.in);
+
       if (valor <= 0) {
           Utils.erro("Valor inválido para levantamento.");
           return;
@@ -44,7 +47,9 @@ public class Conta {
       saldo -= valor;
       Movimento movimento = new Movimento(new java.util.Date(), valor, saldo, TipoMove.levamentar, 0);
       movimentos.add(movimento);
-      Utils.sucesso("Levantamento de " + valor + " realizado com sucesso.");
+      Utils.sucesso("Levantamento de " + valor + " EUR realizado com sucesso.");
+      ConsolaUi.pausa(sc);
+
   }
 
   public void transferirDinheiro(String ibanDestinatario, double valor) {

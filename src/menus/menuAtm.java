@@ -51,7 +51,6 @@ public class menuAtm {
             double quantidade = sc.nextDouble();
             src.utils.Session.getCurrentConta().levantarDinheiro(quantidade);
             contaRepo.atualizar(src.utils.Session.getCurrentConta());
-            ConsolaUi.pausa(sc);
             break;
           case 3:
             ConsolaUi.titulo("Transferir Dinheiro");

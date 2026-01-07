@@ -2,7 +2,7 @@ package src;
 import java.util.*;
 
 import src.menus.menuAtm;
-import src.menus.menuBanco;
+import src.menus.loginBanco;
 import src.menus.menuWebBanking;
 import src.ui.ConsolaUi;
 import src.utils.*;
@@ -27,7 +27,7 @@ public class Main {
 
       switch (opcao) {
         case 1:
-          menuBanco.showMenuBanco();
+          loginBanco.showLogin();
           break;
         case 2:
           menuAtm.showMenuAtm();
