@@ -52,28 +52,96 @@ public class Conta {
 
   }
 
-  public void transferirDinheiro(String ibanDestinatario, double valor) {
-      if (valor <= 0) {
-          Utils.erro("Valor inválido para transferência.");
-          return;
-      }
-      if (valor > saldo) {
-          Utils.erro("Saldo insuficiente para a transferência.");
-          return;
-      }
-      ContaCSVRepository contaRepo = new ContaCSVRepository();
-      if(contaRepo.buscarPorIban(ibanDestinatario) != null) {
-          Utils.erro("IBAN do destinatário inválido.");
-          return;
-      }
-      else {
-          Conta contaDestinatario = contaRepo.buscarPorIban(ibanDestinatario);
-          contaDestinatario.saldo += valor;
-          saldo -= valor;
-          Movimento movimento = new Movimento(new java.util.Date(), valor, saldo, TipoMove.enviar, Integer.parseInt(ibanDestinatario));
-          movimentos.add(movimento);
-          Utils.sucesso("Transferência de " + valor + " para " + ibanDestinatario + " realizada com sucesso.");
+    // Adicionar estes métodos à classe Conta.java
+
+    // Método para depositar dinheiro (exclusivo WebBanking)
+    public void depositarDinheiro(double valor) {
+        if (valor <= 0) {
+            Utils.erro("Valor inválido para depósito.");
+            return;
         }
+        saldo += valor;
+        Movimento movimento = new Movimento(
+            new java.util.Date(), 
+            valor, 
+            saldo, 
+            TipoMove.depositar, 
+            0
+        );
+        movimentos.add(movimento);
+    }
+
+    // Método para receber transferência (usado quando alguém transfere para esta conta)
+    public void receberTransferencia(String ibanRemetente, double valor) {
+        if (valor <= 0) {
+            Utils.erro("Valor inválido para receber.");
+            return;
+        }
+        saldo += valor;
+        
+        // Converter IBAN para int (pegar últimos dígitos como identificador)
+        int ibanId = 0;
+        try {
+            String numeros = ibanRemetente.replaceAll("[^0-9]", "");
+            if (numeros.length() > 9) {
+                ibanId = Integer.parseInt(numeros.substring(numeros.length() - 9));
+            }
+        } catch (Exception e) {
+            ibanId = 0;
+        }
+        
+        Movimento movimento = new Movimento(
+            new java.util.Date(), 
+            valor, 
+            saldo, 
+            TipoMove.receber, 
+            ibanId
+        );
+        movimentos.add(movimento);
+    }
+
+    // CORREÇÃO DO BUG: Método transferirDinheiro existente deve ser corrigido
+    public void transferirDinheiro(String ibanDestinatario, double valor) {
+        if (valor <= 0) {
+            Utils.erro("Valor inválido para transferência.");
+            return;
+        }
+        if (valor > saldo) {
+            Utils.erro("Saldo insuficiente para a transferência.");
+            return;
+        }
+        
+        ContaCSVRepository contaRepo = new ContaCSVRepository();
+        Conta contaDestinatario = contaRepo.buscarPorIban(ibanDestinatario);
+        
+        // CORREÇÃO: estava "!= null" (errado)
+        if (contaDestinatario == null) {
+            Utils.erro("IBAN do destinatário inválido.");
+            return;
+        }
+        
+        // Realizar a transferência
+        saldo -= valor;
+        
+        // Converter IBAN para int
+        int ibanId = 0;
+        try {
+            String numeros = ibanDestinatario.replaceAll("[^0-9]", "");
+            if (numeros.length() > 9) {
+                ibanId = Integer.parseInt(numeros.substring(numeros.length() - 9));
+            }
+        } catch (Exception e) {
+            ibanId = 0;
+        }
+        
+        Movimento movimento = new Movimento(
+            new java.util.Date(), 
+            valor, 
+            saldo, 
+            TipoMove.enviar, 
+            ibanId
+        );
+        movimentos.add(movimento);
     }
 
     public ArrayList<Movimento> getMovimentos() {
