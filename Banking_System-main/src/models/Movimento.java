@@ -4,7 +4,7 @@ import java.util.*;
 
 // enum para o tipo de movimento
 enum TipoMove {
-    levantar,
+    levamentar,
     depositar,
     enviar,
     receber
