@@ -45,7 +45,7 @@ public class Conta {
           return;
       }
       saldo -= valor;
-      Movimento movimento = new Movimento(new java.util.Date(), valor, saldo, TipoMove.levamentar, 0);
+      Movimento movimento = new Movimento(new java.util.Date(), valor, saldo, TipoMove.levantar, 0);
       movimentos.add(movimento);
       Utils.sucesso("Levantamento de " + valor + " EUR realizado com sucesso.");
       ConsolaUi.pausa(sc);
