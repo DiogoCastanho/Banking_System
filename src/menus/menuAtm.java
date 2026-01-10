@@ -40,29 +40,40 @@ public class menuAtm {
 
         switch (opcao) {
           case 1:
-            ConsolaUi.titulo("Saldo");
-            System.out.println("Saldo: " + src.utils.Session.getCurrentConta().getSaldo());
+            Utils.limparTela();
+            ConsolaUi.titulo("Consultar Saldo");
+            System.out.println("Saldo Atual: " + src.utils.Session.getCurrentConta().getSaldo());
             contaRepo.atualizar(src.utils.Session.getCurrentConta());
             ConsolaUi.pausa(sc);
             break;
           case 2:
+            Utils.limparTela();
             ConsolaUi.titulo("Levantar Dinheiro");
+            System.out.println("Saldo Atual: " + src.utils.Session.getCurrentConta().getSaldo());
             System.out.println("Quantidade a levantar: ");
             double quantidade = sc.nextDouble();
             src.utils.Session.getCurrentConta().levantarDinheiro(quantidade);
             contaRepo.atualizar(src.utils.Session.getCurrentConta());
             break;
           case 3:
+            Utils.limparTela();
             ConsolaUi.titulo("Transferir Dinheiro");
+            System.out.println("Saldo Atual: " + src.utils.Session.getCurrentConta().getSaldo());
             System.out.println("Iban do destinatário: ");
             String ibanDestinatario = sc.nextLine();
             System.out.println("Quantidade a transferir: ");
             double quantia = sc.nextDouble();
             src.utils.Session.getCurrentConta().transferirDinheiro(ibanDestinatario,  quantia);
+
+            Conta contaDestinatario = contaRepo.buscarPorIban(ibanDestinatario);
+            contaDestinatario.receberTransferencia(ibanDestinatario, quantia);
+            
             contaRepo.atualizar(src.utils.Session.getCurrentConta());
+            contaRepo.atualizar(contaDestinatario);
             ConsolaUi.pausa(sc);
             break;
           case 4:
+            Utils.limparTela();
             ConsolaUi.titulo("Últimos Movimentos");
             if(src.utils.Session.getCurrentConta().getMovimentos().isEmpty()) {
                 System.out.println("Nenhum movimento encontrado.");
@@ -72,6 +83,7 @@ public class menuAtm {
             ConsolaUi.pausa(sc);
             break;
           case 5:
+            Utils.limparTela();
             ConsolaUi.titulo("Alterar Pin");
             System.out.println("Novo Pin: ");
             int pin = sc.nextInt();
@@ -80,6 +92,7 @@ public class menuAtm {
             ConsolaUi.pausa(sc);
             break;
           case 0:
+            Utils.limparTela();
             System.out.println("A voltar...");
             src.utils.Session.clearConta();
             break;
