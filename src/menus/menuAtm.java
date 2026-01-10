@@ -41,45 +41,19 @@ public class menuAtm {
 
         switch (opcao) {
           case 1:
-<<<<<<< HEAD
             CanalAcesso.consultarSaldo(sc, src.utils.Session.getCurrentConta());
-=======
-            Utils.limparTela();
-            ConsolaUi.titulo("Consultar Saldo");
-            System.out.println("Saldo Atual: " + src.utils.Session.getCurrentConta().getSaldo());
-            contaRepo.atualizar(src.utils.Session.getCurrentConta());
-            ConsolaUi.pausa(sc);
->>>>>>> f65b100b6edd77c7b623dddc5cf29b1ad6209381
             break;
           case 2:
             Utils.limparTela();
             ConsolaUi.titulo("Levantar Dinheiro");
-<<<<<<< HEAD
-            System.out.print("Quantidade a levantar: ");
-=======
             System.out.println("Saldo Atual: " + src.utils.Session.getCurrentConta().getSaldo());
             System.out.println("Quantidade a levantar: ");
->>>>>>> f65b100b6edd77c7b623dddc5cf29b1ad6209381
             double quantidade = sc.nextDouble();
             src.utils.Session.getCurrentConta().levantarDinheiro(quantidade);
             contaRepo.atualizar(src.utils.Session.getCurrentConta());
             break;
           case 3:
-            Utils.limparTela();
-            ConsolaUi.titulo("Transferir Dinheiro");
-            System.out.println("Saldo Atual: " + src.utils.Session.getCurrentConta().getSaldo());
-            System.out.println("Iban do destinatário: ");
-            String ibanDestinatario = sc.nextLine();
-            System.out.println("Quantidade a transferir: ");
-            double quantia = sc.nextDouble();
-            src.utils.Session.getCurrentConta().transferirDinheiro(ibanDestinatario,  quantia);
-
-            Conta contaDestinatario = contaRepo.buscarPorIban(ibanDestinatario);
-            contaDestinatario.receberTransferencia(ibanDestinatario, quantia);
-            
-            contaRepo.atualizar(src.utils.Session.getCurrentConta());
-            contaRepo.atualizar(contaDestinatario);
-            ConsolaUi.pausa(sc);
+            CanalAcesso.fazerTransferencia(sc, src.utils.Session.getCurrentConta(), contaRepo);
             break;
           case 4:
             Utils.limparTela();
