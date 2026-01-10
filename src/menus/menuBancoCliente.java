@@ -15,8 +15,7 @@ public class menuBancoCliente {
             Utils.limparTela();
             ConsolaUi.titulo("Menu Cliente - " + cliente.getNome());
 
-            System.out.println("1 - Consultar Conta");
-            System.out.println("2 - Ver Movimentos");
+            System.out.println("1 - Aceder Conta");
             System.out.println("0 - Voltar");
 
             ConsolaUi.linha();
