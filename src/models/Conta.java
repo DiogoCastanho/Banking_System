@@ -40,76 +40,27 @@ public class Conta {
   }
 
   public void levantarDinheiro(double valor) {
-    Scanner sc = new Scanner(System.in);
-    if (valor <= 0) {
-        Utils.erro("Valor inválido para levantamento.");
-        return;
-    }
-    if (valor > saldo) {
-        Utils.erro("Saldo insuficiente para o levantamento.");
-        return;
-    }
-    saldo -= valor;
-    Movimento movimento = new Movimento(
-        new java.util.Date(), 
-        valor, 
-        saldo, 
-        TipoMove.levantar,
-        "0"
-    );
-    movimentos.add(movimento);
-    movimentoRepo.salvar(iban, movimento);
-    Utils.sucesso("Levantamento de " + valor + " EUR realizado com sucesso.");
-    ConsolaUi.pausa(sc);
-    }
-
-    public void transferirDinheiro(String ibanDestinatario, double valor) {
+        Scanner sc = new Scanner(System.in);
         if (valor <= 0) {
-            Utils.erro("Valor inválido para transferência.");
+            Utils.erro("Valor inválido para levantamento.");
             return;
         }
         if (valor > saldo) {
-            Utils.erro("Saldo insuficiente para a transferência.");
+            Utils.erro("Saldo insuficiente para o levantamento.");
             return;
         }
-        
-        ContaCSVRepository contaRepo = new ContaCSVRepository();
-        Conta contaDestinatario = contaRepo.buscarPorIban(ibanDestinatario);
-        
-        if (contaDestinatario == null) {
-            Utils.erro("IBAN do destinatário inválido.");
-            return;
-        }
-        
         saldo -= valor;
-        
         Movimento movimento = new Movimento(
             new java.util.Date(), 
             valor, 
             saldo, 
-            TipoMove.enviar, 
-            ibanDestinatario
+            TipoMove.levantar,
+            "0"
         );
         movimentos.add(movimento);
         movimentoRepo.salvar(iban, movimento);
-    }
-
-    public void receberTransferencia(String ibanRemetente, double valor) {
-        if (valor <= 0) {
-            return;
-        }
-        
-        saldo += valor;
-        
-        Movimento movimento = new Movimento(
-            new java.util.Date(), 
-            valor, 
-            saldo, 
-            TipoMove.receber, 
-            ibanRemetente
-        );
-        movimentos.add(movimento);
-        movimentoRepo.salvar(iban, movimento);
+        Utils.sucesso("Levantamento de " + valor + " EUR realizado com sucesso.");
+        ConsolaUi.pausa(sc);
     }
 
     public void depositarDinheiro(double valor) {

@@ -1,13 +1,11 @@
 package src.repository;
 
 import java.util.List;
-import java.util.Scanner;
 
 import src.utils.*;
 
 import src.models.Cliente;
 import src.models.Conta;
-import src.ui.ConsolaUi;
 
 public class ClienteService {
 

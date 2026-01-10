@@ -2,8 +2,6 @@ package src.models;
 
 import java.util.*;
 
-import src.repository.ContaCSVRepository;
-
 public class Cliente {
 
     private String nome;

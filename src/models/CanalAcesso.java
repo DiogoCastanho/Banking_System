@@ -4,6 +4,7 @@ import java.util.Scanner;
 import src.repository.ContaCSVRepository;
 import src.ui.ConsolaUi;
 import src.utils.Utils;
+import src.repository.MovimentoCSVRepository;
 
 public abstract class CanalAcesso {
 
@@ -92,9 +93,35 @@ public abstract class CanalAcesso {
     }
 
     double saldoAnterior = conta.getSaldo();
-    conta.transferirDinheiro(ibanDestinatario, valor);
-    contaDestinatario.receberTransferencia(conta.getIban(), valor);
 
+    // Atualiza saldos diretamente (CanalAcesso está no mesmo package, pode aceder a campos protegidos)
+    conta.saldo -= valor;
+    contaDestinatario.saldo += valor;
+
+    // Regista movimentos diretamente no CSV de movimentos
+    MovimentoCSVRepository movimentoRepo = new MovimentoCSVRepository();
+
+    Movimento movEnvio = new Movimento(
+        new java.util.Date(),
+        valor,
+        conta.getSaldo(),
+        TipoMove.enviar,
+        ibanDestinatario
+    );
+    conta.getMovimentos().add(movEnvio);
+    movimentoRepo.salvar(conta.getIban(), movEnvio);
+
+    Movimento movReceber = new Movimento(
+        new java.util.Date(),
+        valor,
+        contaDestinatario.getSaldo(),
+        TipoMove.receber,
+        conta.getIban()
+    );
+    contaDestinatario.getMovimentos().add(movReceber);
+    movimentoRepo.salvar(contaDestinatario.getIban(), movReceber);
+
+    // Atualiza ficheiro de contas
     contaRepo.atualizar(conta);
     contaRepo.atualizar(contaDestinatario);
 
