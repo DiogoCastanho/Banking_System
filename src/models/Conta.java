@@ -149,7 +149,8 @@ public class Conta {
   public String toString() {
       return "IBAN: " + iban +
             "\nTipo de Conta: " + tipoconta +
-            "\nSaldo: " + String.format("%.2f EUR", saldo);
+            "\nSaldo: " + String.format("%.2f EUR", saldo) +
+            "\n----------------------------------------------------";
   }
 
   public String toCsv() {

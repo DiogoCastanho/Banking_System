@@ -218,10 +218,11 @@ public class menuBanco {
                     ConsolaUi.pausa(sc);
                     break;
                 case 0:
-                    System.out.println("A voltar ao menu principal...");
+                    Utils.sucesso("A voltar ao menu principal...");
                     break;
                 default:
                     System.out.println("Opção inválida!");
+                    ConsolaUi.pausa(sc);
             }
 
         } while (opcao != 0);

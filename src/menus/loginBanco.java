@@ -23,7 +23,7 @@ public class loginBanco {
             String senha = sc.nextLine().trim();
 
             if (utilizador.equals("admin") && senha.equals("admin")) {
-                Utils.sucesso("Login admin efetuado.");
+                Utils.sucesso("Autenticação bem-sucedida! Bem-vindo Admin");
                 ConsolaUi.pausa(sc);
                 menuBanco.showMenuBanco();
                 return;
@@ -31,7 +31,7 @@ public class loginBanco {
 
             Cliente cliente = clienteRepo.buscarInfoCliente(utilizador, senha);
             if (cliente != null) {
-                Utils.sucesso("Login cliente efetuado: " + cliente.getUtilizador());
+                Utils.sucesso("Autenticação bem-sucedida! Bem-vindo(a), " + cliente.getNome());
                 ConsolaUi.pausa(sc);
                 menuBancoCliente.showMenuBancoCliente(cliente);
                 return;
