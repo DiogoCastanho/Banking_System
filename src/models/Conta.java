@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import src.repository.ContaCSVRepository;
+import src.repository.MovimentoCSVRepository;
 import src.ui.ConsolaUi;
 import src.utils.*;
 
@@ -15,8 +16,8 @@ public class Conta {
   protected TipoContaEnum tipoconta;
   protected ArrayList<Movimento> movimentos;
   protected Cartao cartao;
+  private MovimentoCSVRepository movimentoRepo;
 
-  // construtor
   public Conta(String iban, String nifCliente, double saldo, TipoContaEnum tipoconta, Cartao cartao) {
     this.iban   = iban;
     this.nifCliente = nifCliente;
@@ -24,9 +25,9 @@ public class Conta {
     this.tipoconta = tipoconta;
     this.cartao = cartao;
     this.movimentos = new ArrayList<>();
+    this.movimentoRepo = new MovimentoCSVRepository();
   }
 
-  // getters
   public String getNifCliente() { return nifCliente; }
   public String getIban() { return iban; }
   public double getSaldo() { return saldo; }
@@ -49,9 +50,10 @@ public class Conta {
         valor, 
         saldo, 
         TipoMove.levantar,
-        0
+        "0"
     );
     movimentos.add(movimento);
+    movimentoRepo.salvar(iban, movimento);
     Utils.sucesso("Levantamento de " + valor + " EUR realizado com sucesso.");
     ConsolaUi.pausa(sc);
     }
@@ -76,24 +78,15 @@ public class Conta {
         
         saldo -= valor;
         
-        int ibanId = 0;
-        try {
-            String numeros = ibanDestinatario.replaceAll("[^0-9]", "");
-            if (numeros.length() > 9) {
-                ibanId = Integer.parseInt(numeros.substring(numeros.length() - 9));
-            }
-        } catch (Exception e) {
-            ibanId = 0;
-        }
-        
         Movimento movimento = new Movimento(
             new java.util.Date(), 
             valor, 
             saldo, 
             TipoMove.enviar, 
-            ibanId
+            ibanDestinatario
         );
         movimentos.add(movimento);
+        movimentoRepo.salvar(iban, movimento);
     }
 
     public void receberTransferencia(String ibanRemetente, double valor) {
@@ -103,24 +96,15 @@ public class Conta {
         
         saldo += valor;
         
-        int ibanId = 0;
-        try {
-            String numeros = ibanRemetente.replaceAll("[^0-9]", "");
-            if (numeros.length() > 9) {
-                ibanId = Integer.parseInt(numeros.substring(numeros.length() - 9));
-            }
-        } catch (Exception e) {
-            ibanId = 0;
-        }
-        
         Movimento movimento = new Movimento(
             new java.util.Date(), 
             valor, 
             saldo, 
             TipoMove.receber, 
-            ibanId
+            ibanRemetente
         );
         movimentos.add(movimento);
+        movimentoRepo.salvar(iban, movimento);
     }
 
     public void depositarDinheiro(double valor) {
@@ -136,9 +120,10 @@ public class Conta {
             valor, 
             saldo, 
             TipoMove.depositar, 
-            0
+            "0"
         );
         movimentos.add(movimento);
+        movimentoRepo.salvar(iban, movimento);
     }
 
     public ArrayList<Movimento> getMovimentos() {
@@ -149,8 +134,7 @@ public class Conta {
   public String toString() {
       return "IBAN: " + iban +
             "\nTipo de Conta: " + tipoconta +
-            "\nSaldo: " + String.format("%.2f EUR", saldo) +
-            "\n----------------------------------------------------";
+            "\nSaldo: " + String.format("%.2f EUR", saldo);
   }
 
   public String toCsv() {
