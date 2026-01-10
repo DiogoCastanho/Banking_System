@@ -1,15 +1,12 @@
 package src.repository;
 
 import src.models.Cartao;
-import src.models.Cliente;
 import src.models.Conta;
+import src.models.Movimento;
 import src.models.TipoContaEnum;
-import src.ui.ConsolaUi;
-import src.utils.Utils;
 
 import java.io.*;
 import java.util.*;
-import src.utils.*;
 import java.time.LocalDate;
 
 public class ContaCSVRepository {
@@ -35,7 +32,6 @@ public class ContaCSVRepository {
     }
 
     public void atualizar(Conta conta) {
-        // saved the clients on the memory for rewrite all the file with changes
         List<Conta> contas = listarContas(ficheiro);
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ficheiro))) {
@@ -54,8 +50,6 @@ public class ContaCSVRepository {
 
             }
 
-            // Utils.sucesso("Cliente " + cliente.getUtilizador() + " atualizado");
-
         }catch (IOException e) {
             throw new RuntimeException("Erro ao atualzar cliente");
         }
@@ -64,6 +58,8 @@ public class ContaCSVRepository {
 
     public static List<Conta> listarContas(String caminhoArquivo) {
       List<Conta> contas = new ArrayList<>();
+      MovimentoCSVRepository movimentoRepo = new MovimentoCSVRepository();
+      
       try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
           String cabecalho = br.readLine();
           String linha;
@@ -78,6 +74,12 @@ public class ContaCSVRepository {
                 int pin = Integer.parseInt(dados[7].trim());
                 boolean bloqueado = Boolean.parseBoolean(dados[8].trim());
                 Conta conta = new Conta(dados[0].trim(),dados[1].trim(),saldo,TipoConta,new Cartao(dados[4].trim(), localDate, cvv, pin, bloqueado));
+                
+                List<Movimento> movimentos = movimentoRepo.listarMovimentosPorIban(dados[0].trim());
+                for (Movimento mov : movimentos) {
+                    conta.getMovimentos().add(mov);
+                }
+                
                 contas.add(conta);
               }
           }
