@@ -33,6 +33,11 @@ public class Conta {
   public TipoContaEnum getTipoConta() { return tipoconta; }
   public Cartao getCartao() { return cartao; }
 
+  // setters
+  public double setSaldo(double valor) {
+    return this.saldo += valor;
+  }
+
   public void levantarDinheiro(double valor) {
     Scanner sc = new Scanner(System.in);
     if (valor <= 0) {

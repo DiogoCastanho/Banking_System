@@ -2,6 +2,7 @@ package src.menus;
 
 import src.models.ATM;
 import src.models.Banco;
+import src.models.CanalAcesso;
 import src.models.Conta;
 import src.ui.ConsolaUi;
 import src.repository.*;
@@ -40,14 +41,11 @@ public class menuAtm {
 
         switch (opcao) {
           case 1:
-            ConsolaUi.titulo("Saldo");
-            System.out.println("Saldo: " + src.utils.Session.getCurrentConta().getSaldo());
-            contaRepo.atualizar(src.utils.Session.getCurrentConta());
-            ConsolaUi.pausa(sc);
+            CanalAcesso.consultarSaldo(sc, src.utils.Session.getCurrentConta());
             break;
           case 2:
             ConsolaUi.titulo("Levantar Dinheiro");
-            System.out.println("Quantidade a levantar: ");
+            System.out.print("Quantidade a levantar: ");
             double quantidade = sc.nextDouble();
             src.utils.Session.getCurrentConta().levantarDinheiro(quantidade);
             contaRepo.atualizar(src.utils.Session.getCurrentConta());

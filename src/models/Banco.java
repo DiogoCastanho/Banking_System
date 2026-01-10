@@ -15,11 +15,7 @@ public class Banco extends CanalAcesso {
   public List<Cliente> getClientes() { return clientes; }
 
   public void depositarDinheiro(Conta conta, double valor) {
-    // resto da implementação q depois 
   }
-
-  @Override
-  public void consultarSaldo(Conta conta, Cliente cliente) { }
   
   @Override
   public void verMovimentos(Conta conta, Cliente cliente) { }
