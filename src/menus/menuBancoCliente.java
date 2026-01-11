@@ -133,7 +133,7 @@ public class menuBancoCliente {
                     System.out.print("Introduza o valor a depositar: ");
                     double valorDeposito = sc.nextDouble();
 
-                    Conta depositar = contaService.depositarDinheiro(conta, valorDeposito);
+                    contaService.depositarDinheiro(conta, valorDeposito);
 
                     break;
                 case 3:

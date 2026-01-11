@@ -3,7 +3,6 @@ package src.models;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import src.repository.ContaCSVRepository;
 import src.repository.MovimentoCSVRepository;
 import src.ui.ConsolaUi;
 import src.utils.*;

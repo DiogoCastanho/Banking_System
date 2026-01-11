@@ -2,7 +2,6 @@ package src.ui;
 
 import java.util.List;
 import java.util.Scanner;
-import src.utils.*;
 
 import src.models.Conta;
 

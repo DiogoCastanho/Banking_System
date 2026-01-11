@@ -61,7 +61,7 @@ public class ContaCSVRepository {
       MovimentoCSVRepository movimentoRepo = new MovimentoCSVRepository();
       
       try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
-          String cabecalho = br.readLine();
+          br.readLine();
           String linha;
           while ((linha = br.readLine()) != null) {
               String[] dados = linha.split(",");

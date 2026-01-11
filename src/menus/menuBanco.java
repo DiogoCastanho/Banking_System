@@ -1,6 +1,5 @@
 package src.menus;
 
-import src.models.Banco;
 import src.models.Cliente;
 import src.models.Conta;
 import src.repository.*;
@@ -12,7 +11,6 @@ import src.ui.ConsolaUi;
 public class menuBanco {
 
     public static void showMenuBanco() {
-        Banco banco = new Banco("Banco do mell");
         ClienteService clienteService = new ClienteService(); // used by create client section
         ContaService contaService = new ContaService(); // used by create additional account
         ContaCSVRepository contaRepository = new ContaCSVRepository();
@@ -102,7 +100,7 @@ public class menuBanco {
                             String senhaC = Utils.lerSenhaParaAtualizarCliente(sc, "Atualizar senha (ENTER para manter): ",clienteEdit.getSenha());
                             ConsolaUi.pausa(sc);
 
-                            Cliente clienteAtualizado = clienteService.editarCliente(nomeC, nifC, utilizadorC, senhaC);
+                            clienteService.editarCliente(nomeC, nifC, utilizadorC, senhaC);
                             ConsolaUi.pausa(sc);
 
                         }
