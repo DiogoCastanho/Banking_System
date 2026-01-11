@@ -7,7 +7,6 @@ import src.models.CanalAcesso;
 import src.models.Cliente;
 import src.models.Conta;
 import src.repository.ContaCSVRepository;
-import src.repository.ContaService;
 import src.ui.ConsolaUi;
 import src.utils.Session;
 import src.utils.Utils;
