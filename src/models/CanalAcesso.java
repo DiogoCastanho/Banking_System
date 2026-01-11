@@ -23,8 +23,6 @@ public abstract class CanalAcesso {
     ConsolaUi.pausa(sc);
   }
 
-  public abstract void verMovimentos(Conta conta, Cliente cliente);
-
   public static void fazerTransferencia(Scanner sc, Conta conta, ContaCSVRepository contaRepo) {
     Utils.limparTela();
     ConsolaUi.titulo("Transferir Dinheiro");

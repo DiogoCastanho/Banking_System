@@ -116,7 +116,7 @@ public class menuBancoCliente {
                     CanalAcesso.consultarSaldo(sc, conta);
                     break;
                 case 2:
-                    ContaService contaService = new ContaService();
+                    Utils.limparTela();
                     ConsolaUi.titulo("Depositar dinheiro");
 
                     System.out.println("Conta : " + conta.getIban());
@@ -127,7 +127,18 @@ public class menuBancoCliente {
                     
                     double valorDeposito = Utils.lerDoubleSeguro(sc, "Introduza o valor a depositar: ");
 
-                    contaService.depositarDinheiro(conta, valorDeposito);
+                    if (valorDeposito <= 0) {
+                        Utils.erro("O valor deve ser maior que zero.");
+                        ConsolaUi.pausa(sc);
+                        break;
+                    }
+
+                    conta.depositarDinheiro(valorDeposito);
+                    contaRepo.atualizar(conta);
+                    
+                    Utils.sucesso("Depósito realizado com sucesso!");
+                    System.out.println("Novo saldo: " + String.format("%.2f EUR", conta.getSaldo()));
+                    ConsolaUi.pausa(sc);
 
                     break;
                 case 3:
@@ -135,8 +146,8 @@ public class menuBancoCliente {
                     
                     double quantidade = Utils.lerDoubleSeguro(sc, "Quantidade a levantar: ");
                     
-                    src.utils.Session.getCurrentConta().levantarDinheiro(quantidade);
-                    contaRepo.atualizar(src.utils.Session.getCurrentConta());
+                    conta.levantarDinheiro(quantidade);
+                    contaRepo.atualizar(conta);
                     break;
                 case 4:
                     ConsolaUi.titulo("Fazer Transferências");

@@ -102,55 +102,43 @@ public class ContaService {
             throw new IllegalArgumentException("NIF deve ter 9 dígitos");
         }
 
+        if (conta.getSaldo() > 0) {
+            Utils.erro("Não é possível remover a conta. Saldo atual: " + conta.getSaldo() + " EUR");
+            Utils.aviso("Transfira ou levante o saldo antes de remover a conta.");
+            return conta;
+        }
+
         List<Conta> contas = contaRepository.listarContas("contas.csv");
+        List<Conta> contasRestantes = contas.stream()
+            .filter(c -> !c.getIban().equals(conta.getIban()))
+            .toList();
 
-        boolean saldoZero = true;
-
-        for (Conta c : contas) {
-            if (c.getCartao().equals(conta.getCartao())) {
-                if (c.getSaldo() > 0) {
-                    saldoZero = false;
-                    break;
-                }
+        try (java.io.PrintWriter pw = new java.io.PrintWriter(new java.io.FileWriter("contas.csv"))) {
+            pw.println("IBAN,NIF,Saldo,TipoConta,NumeroCartao,Validade,CVV,Pin,Bloqueado");
+            for (Conta c : contasRestantes) {
+                pw.println(c.toCsv());
             }
-
+            Utils.sucesso("Conta " + conta.getIban() + " removida com sucesso.");
+        } catch (java.io.IOException e) {
+            throw new RuntimeException("Erro ao remover conta: " + e.getMessage());
         }
 
-        if (saldoZero) {
-            contaRepository.removerPorNifCliente(conta.getNifCliente());
-            Utils.sucesso("Remoção efetuada com sucesso.");
-
-        }
         return conta;        
     }
 
     public Conta depositarDinheiro(Conta conta, double valor) {
-
         if (valor <= 0) {
             Utils.erro("O valor introduzido é inválido");
+            return conta;
         }
 
-        List<Conta> contas = contaRepository.listarContas("contas.csv");
-
-        for (Conta c : contas) {
-            if (c.getIban().equals(conta.getIban())) {
-                conta.setSaldo(valor);
-
-                Utils.sucesso("Depósito realizado com sucesso!");
-                System.out.println("Novo saldo: " + conta.getSaldo() + " EUR");
-
-                contaRepository.atualizar(conta);
-
-                ConsolaUi.pausa(sc);
-                break;
-            } else {
-                throw new IllegalArgumentException("Erro ao depositar saldo");
-            }
-
-        }
-
+        conta.depositarDinheiro(valor); // Usa o método da classe Conta
+        contaRepository.atualizar(conta);
+        
+        Utils.sucesso("Depósito realizado com sucesso!");
+        System.out.println("Novo saldo: " + conta.getSaldo() + " EUR");
+        
+        ConsolaUi.pausa(sc);
         return conta;
-
     }
-
 }

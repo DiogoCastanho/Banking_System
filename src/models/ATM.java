@@ -9,7 +9,5 @@ public class ATM extends CanalAcesso {
     }
 
     public String getNome() { return nome; }
-  
-    @Override
-    public void verMovimentos(Conta conta, Cliente cliente) { }
+
 }

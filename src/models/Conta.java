@@ -34,7 +34,7 @@ public class Conta {
   public Cartao getCartao() { return cartao; }
 
   // setters
-  public double setSaldo(double valor) {
+  public double adicionarSaldo(double valor) {
     return this.saldo += valor;
   }
 

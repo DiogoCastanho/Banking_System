@@ -2,7 +2,11 @@ package src.models;
 
   public class WebBanking extends CanalAcesso {
     
-    @Override
-    public void verMovimentos(Conta conta, Cliente cliente) { }
+    private String nome;
 
+    public WebBanking (String nome) {
+        this.nome = nome;
+    }
+
+    public String getNome() { return nome; }
   }

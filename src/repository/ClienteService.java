@@ -75,7 +75,6 @@ public class ClienteService {
     }
 
     public Cliente removerCliente(String nif) {
-
         if (!nif.matches("\\d{9}")) {
             throw new IllegalArgumentException("NIF deve ter 9 dígitos");
         }
@@ -89,24 +88,27 @@ public class ClienteService {
         List<Conta> contas = contaRepository.listarContas("contas.csv");
 
         boolean saldoZero = true;
+        double saldoTotal = 0;  // Para mostrar quanto tem
 
         for (Conta c : contas) {
             if (c.getNifCliente().equals(nif)) {
                 if (c.getSaldo() > 0) {
                     saldoZero = false;
-                    break;
+                    saldoTotal += c.getSaldo();  // Acumula saldo
                 }
             }
-
         }
 
         if (saldoZero) {
             contaRepository.removerPorNifCliente(nif);
             clienteRepository.removerPorNif(nif);
-            Utils.sucesso("Remoção efetuada com sucesso.");
-
+            Utils.sucesso("Cliente e suas contas removidos com sucesso.");
+        } else {
+            // Informa o utilizador porque não pode remover
+            Utils.erro("Não é possível remover o cliente.");
+            Utils.aviso("Saldo total nas contas: " + String.format("%.2f EUR", saldoTotal));
+            Utils.aviso("Transfira ou levante o saldo de todas as contas antes de remover o cliente.");
         }
-
 
         return cliente;
         
