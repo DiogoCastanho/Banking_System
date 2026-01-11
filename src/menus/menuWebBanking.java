@@ -81,10 +81,7 @@ public class menuWebBanking {
             System.out.println("0 - Logout");
             
             ConsolaUi.linha();
-            System.out.print("Escolha uma opção: ");
-
-            opcao = sc.nextInt();
-            sc.nextLine(); 
+            opcao = Utils.lerInteiroSeguro(sc, "Escolha uma opção: ");
 
             switch (opcao) {
                 case 1:
@@ -128,10 +125,7 @@ public class menuWebBanking {
         
         System.out.println("[0] Voltar ao Menu Principal");
         ConsolaUi.linha();
-        System.out.print("Selecione a conta (0-" + contas.size() + "): ");
-        
-        int escolha = sc.nextInt();
-        sc.nextLine(); 
+        int escolha = Utils.lerInteiroSeguro(sc, "Selecione a conta (0-" + contas.size() + "): ");
 
         if (escolha == 0) {
             return; 
@@ -169,10 +163,7 @@ public class menuWebBanking {
             System.out.println("0 - Sair da Conta");
             
             ConsolaUi.linha();
-            System.out.print("Escolha uma opção: ");
-
-            opcao = sc.nextInt();
-            sc.nextLine(); 
+            opcao = Utils.lerInteiroSeguro(sc, "Escolha uma opção: ");
 
             switch (opcao) {
                 case 1:

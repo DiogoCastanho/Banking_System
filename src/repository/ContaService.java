@@ -57,9 +57,7 @@ public class ContaService {
         System.out.println("Escolha o tipo de conta:");
         System.out.println("1 - Conta Ordem");
         System.out.println("2 - Conta Poupança");
-        System.out.print("Opção: ");
-        int op = sc.nextInt();
-        sc.nextLine();
+        int op = Utils.lerInteiroSeguro(sc, "Opção: ");
 
         TipoContaEnum tipoConta = (op == 1) ? TipoContaEnum.CONTA_ORDEM : TipoContaEnum.CONTA_POUPANCA;
 

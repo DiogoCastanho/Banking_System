@@ -21,9 +21,8 @@ public class Main {
       System.out.println("0 - Sair");
 
       ConsolaUi.linha();
-      System.out.print("Escolha uma opção: ");
 
-      opcao = sc.nextInt();
+      opcao = Utils.lerInteiroSeguro(sc, "Escolha uma opção: ");
 
       switch (opcao) {
         case 1:

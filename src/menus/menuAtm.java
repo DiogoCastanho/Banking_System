@@ -1,6 +1,5 @@
 package src.menus;
 
-import src.models.Banco;
 import src.models.CanalAcesso;
 import src.models.Conta;
 import src.ui.ConsolaUi;
@@ -12,7 +11,6 @@ import src.utils.*;
 public class menuAtm {
 
   public static void showMenuAtm() {
-    Banco banco = new Banco("Banco do Mell");
     ContaCSVRepository contaRepo = new ContaCSVRepository();
     // ATM atm = new ATM("ATM do " + banco);
     Scanner sc = new Scanner(System.in);
@@ -25,7 +23,7 @@ public class menuAtm {
 
     do {
         Utils.limparTela();
-        ConsolaUi.titulo("Menu ATM "+ banco.getNome());
+        ConsolaUi.titulo("Menu ATM ");
         System.out.println("1 - Consultar Saldo");
         System.out.println("2 - Levantar dinheiro");
         System.out.println("3 - Transferir dinheiro");
@@ -35,8 +33,7 @@ public class menuAtm {
         ConsolaUi.linha();
         System.out.print("Escolha uma opção: ");
 
-        opcao = sc.nextInt();
-        sc.nextLine(); // limpar buffer
+        opcao = Utils.lerInteiroSeguro(sc, "Escolha uma opção: ");
 
         switch (opcao) {
           case 1:
@@ -46,7 +43,7 @@ public class menuAtm {
             Utils.limparTela();
             ConsolaUi.titulo("Levantar Dinheiro");
             System.out.print("Quantidade a levantar: ");
-            double quantidade = sc.nextDouble();
+            double quantidade = Utils.lerDoubleSeguro(sc, "Quantidade a levantar: ");
             src.utils.Session.getCurrentConta().levantarDinheiro(quantidade);
             contaRepo.atualizar(src.utils.Session.getCurrentConta());
             break;
@@ -66,8 +63,7 @@ public class menuAtm {
           case 5:
             Utils.limparTela();
             ConsolaUi.titulo("Alterar Pin");
-            System.out.println("Novo Pin: ");
-            int pin = sc.nextInt();
+            int pin = Utils.lerInteiroSeguro(sc, "Novo Pin: ");
             src.utils.Session.getCurrentConta().getCartao().setPin(pin);
             contaRepo.atualizar(src.utils.Session.getCurrentConta());
             ConsolaUi.pausa(sc);
@@ -106,9 +102,7 @@ public class menuAtm {
             return false;
         }
 
-        System.out.print("Pin: ");
-        String pinStr = sc.nextLine();
-        int pin = Integer.parseInt(pinStr);
+        int pin = Utils.lerInteiroSeguro(sc, "Pin: ");
 
         Conta contaLogada = contaRepo.buscarCartao(n_cartao, pin);
 

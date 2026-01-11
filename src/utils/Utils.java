@@ -9,8 +9,6 @@ public class Utils {
     public static final String VERDE = "\u001B[32m";
     public static final String AMARELO = "\u001B[33m";
 
-    // ================= UI =================
-
     public static void limparTela() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -42,11 +40,48 @@ public class Utils {
         return texto;
     }
 
+    public static int lerInteiroSeguro(Scanner sc, String mensagem) {
+        int numero = -1;
+        boolean valido = false;
+        
+        while (!valido) {
+            System.out.print(mensagem);
+            String input = sc.nextLine().trim();
+            
+            try {
+                numero = Integer.parseInt(input);
+                valido = true;
+            } catch (NumberFormatException e) {
+                erro("Por favor, introduza um número válido.");
+            }
+        }
+        
+        return numero;
+    }
+
+    public static double lerDoubleSeguro(Scanner sc, String mensagem) {
+        double numero = -1;
+        boolean valido = false;
+        
+        while (!valido) {
+            System.out.print(mensagem);
+            String input = sc.nextLine().trim();
+            
+            try {
+                numero = Double.parseDouble(input);
+                valido = true;
+            } catch (NumberFormatException e) {
+                erro("Por favor, introduza um número válido.");
+            }
+        }
+        
+        return numero;
+    }
+
     public static int lerOpcao(Scanner sc, String mensagem) {
         int opcao;
         do {
-            System.out.print(mensagem);
-            opcao = sc.nextInt();
+            opcao = lerInteiroSeguro(sc, mensagem);
 
             if (opcao < 0) {
                 erro("Campo inválido.");

@@ -26,10 +26,8 @@ public class menuBancoCliente {
             System.out.println("0 - Voltar");
 
             ConsolaUi.linha();
-            System.out.print("Escolha uma opção: ");
 
-            opcao = sc.nextInt();
-            sc.nextLine();
+            opcao = Utils.lerInteiroSeguro(sc, "Escolha uma opção: ");
 
             switch (opcao) {
                 case 1:
@@ -70,10 +68,8 @@ public class menuBancoCliente {
         
         System.out.println("[0] Voltar ao Menu Principal");
         ConsolaUi.linha();
-        System.out.print("Selecione a conta (0-" + contas.size() + "): ");
         
-        int escolha = sc.nextInt();
-        sc.nextLine(); 
+        int escolha = Utils.lerInteiroSeguro(sc, "Selecione a conta (0-" + contas.size() + "): ");
 
         if (escolha == 0) {
             return; 
@@ -112,10 +108,8 @@ public class menuBancoCliente {
             System.out.println("0 - Sair da Conta");
             
             ConsolaUi.linha();
-            System.out.print("Escolha uma opção: ");
 
-            opcao = sc.nextInt();
-            sc.nextLine(); 
+            opcao = Utils.lerInteiroSeguro(sc, "Escolha uma opção: ");
 
             switch (opcao) {
                 case 1:
@@ -130,16 +124,17 @@ public class menuBancoCliente {
                     System.out.println("Saldo : " + String.format("%.2f EUR", conta.getSaldo()));
 
                     ConsolaUi.linha();
-                    System.out.print("Introduza o valor a depositar: ");
-                    double valorDeposito = sc.nextDouble();
+                    
+                    double valorDeposito = Utils.lerDoubleSeguro(sc, "Introduza o valor a depositar: ");
 
                     contaService.depositarDinheiro(conta, valorDeposito);
 
                     break;
                 case 3:
                     ConsolaUi.titulo("Levantar Dinheiro");
-                    System.out.print("Quantidade a levantar: ");
-                    double quantidade = sc.nextDouble();
+                    
+                    double quantidade = Utils.lerDoubleSeguro(sc, "Quantidade a levantar: ");
+                    
                     src.utils.Session.getCurrentConta().levantarDinheiro(quantidade);
                     contaRepo.atualizar(src.utils.Session.getCurrentConta());
                     break;

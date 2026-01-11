@@ -11,8 +11,8 @@ import src.ui.ConsolaUi;
 public class menuBanco {
 
     public static void showMenuBanco() {
-        ClienteService clienteService = new ClienteService(); // used by create client section
-        ContaService contaService = new ContaService(); // used by create additional account
+        ClienteService clienteService = new ClienteService();
+        ContaService contaService = new ContaService();
         ContaCSVRepository contaRepository = new ContaCSVRepository();
         ClienteCSVRepository clienteRepository = new ClienteCSVRepository();
         Scanner sc = new Scanner(System.in);
@@ -38,10 +38,8 @@ public class menuBanco {
             System.out.println("0 - Logout");
 
             ConsolaUi.linha();
-            System.out.print("Escolha uma opção: ");
 
-            opcao = sc.nextInt();
-            sc.nextLine(); // limpar buffer
+            opcao = Utils.lerInteiroSeguro(sc, "Escolha uma opção: ");
             
             switch (opcao) {
                 case 1:
@@ -93,7 +91,6 @@ public class menuBanco {
                             System.out.println(clienteEdit.toStringDetalhes(nifCl));
                             ConsolaUi.pausa(sc);
 
-                            // request is made to the user to change their data
                             String nomeC = Utils.lerTextoParaAtualizarCliente(sc, "Atualizar nome (ENTER para manter): ", clienteEdit.getNome());
                             String nifC = Utils.lerTextoParaAtualizarCliente(sc, "*NIF Impossível editar", clienteEdit.getNif());
                             String utilizadorC = Utils.lerTextoParaAtualizarCliente(sc, "Atualizar utilizador (ENTER para manter): ", clienteEdit.getUtilizador());
@@ -186,10 +183,8 @@ public class menuBanco {
                             break;
                         }
 
-                        // show account
                         ConsolaUi.mostrarContas(contasCliente, nifRc, sc);
 
-                        // choose the option
                         Conta contaEscolhida = contaService.escolherConta(contasCliente);
                         
                         contaService.buscarContaParaRemover(contaEscolhida);
