@@ -111,19 +111,23 @@ public class menuBanco {
 
                     try {
                         Cliente cliente = clienteRepository.buscarPorNif(nifR);
-
-                        Utils.sucesso("Cliente encontrado");
-                        System.out.println(cliente.toStringDetalhes(nifR));
-
-                        String confirmação = Utils.lerTextoObrigatorio(sc, 
-                            "Tem a certeza que deseja remover este cliente? (S/N): ");
-
-                        if (confirmação.equalsIgnoreCase("S")) {
-                            clienteService.removerCliente(nifR);
-                        } else {
-                            Utils.aviso("Operação cancelada.");
+                        
+                        if (cliente == null) {
+                            throw new IllegalArgumentException("Cliente não encontrado.");
                         }
+                        else {
+                            Utils.sucesso("Cliente encontrado");
+                            System.out.println(cliente.toStringDetalhes(nifR));
 
+                            String confirmação = Utils.lerTextoObrigatorio(sc, 
+                                "Tem a certeza que deseja remover este cliente? (S/N): ");
+
+                            if (confirmação.equalsIgnoreCase("S")) {
+                                clienteService.removerCliente(nifR);
+                            } else {
+                                Utils.aviso("Operação cancelada.");
+                            }
+                        }
                         ConsolaUi.pausa(sc);
 
                     } catch (IllegalArgumentException e) {
@@ -136,7 +140,7 @@ public class menuBanco {
                     ConsolaUi.titulo("Criar Conta Adicional");
 
                     String nifCliente = Utils.lerTextoObrigatorio(sc, "Introduza o NIF do cliente: ");
-
+                    
                     try {
                         Conta conta = contaService.criarContaAdicional(nifCliente);
 
