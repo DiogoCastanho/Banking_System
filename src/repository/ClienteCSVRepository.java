@@ -105,6 +105,7 @@ public class ClienteCSVRepository {
             .toList();
 
         try (PrintWriter pw = new PrintWriter(ficheiro)){
+            pw.println("Nome,NIF,Utilizador,Senha");
             for (Cliente c : clientesRestantes) {
                 pw.println(c.toCsv());
             }
