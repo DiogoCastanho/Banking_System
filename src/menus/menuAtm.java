@@ -82,12 +82,18 @@ public class menuAtm {
 
   private static boolean login(Scanner sc) {
     int counter = 0;
+    String ultimoCartao = "";
     ContaCSVRepository contaRepo = new ContaCSVRepository(); // Instanciar fora do loop
 
     do {
         ConsolaUi.titulo("Login");
         System.out.print("Nº Cartão: ");
         String n_cartao = sc.nextLine();
+
+        if (!n_cartao.equals(ultimoCartao)) {
+            counter = 0;
+            ultimoCartao = n_cartao;
+        }
 
         // 1. Verificar primeiro se a conta existe e se já está bloqueada
         Conta contaExistente = contaRepo.buscarCartaoPorNumero(n_cartao);

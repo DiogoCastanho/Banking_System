@@ -7,6 +7,7 @@ import src.models.CanalAcesso;
 import src.models.Cliente;
 import src.models.Conta;
 import src.repository.ContaCSVRepository;
+import src.repository.ContaService;
 import src.ui.ConsolaUi;
 import src.utils.Session;
 import src.utils.Utils;
@@ -25,8 +26,10 @@ public class menuBancoCliente {
             System.out.println("0 - Voltar");
 
             ConsolaUi.linha();
+            System.out.print("Escolha uma opção: ");
 
-            opcao = Utils.lerInteiroSeguro(sc, "Escolha uma opção: ");
+            opcao = sc.nextInt();
+            sc.nextLine();
 
             switch (opcao) {
                 case 1:
@@ -67,8 +70,10 @@ public class menuBancoCliente {
         
         System.out.println("[0] Voltar ao Menu Principal");
         ConsolaUi.linha();
+        System.out.print("Selecione a conta (0-" + contas.size() + "): ");
         
-        int escolha = Utils.lerInteiroSeguro(sc, "Selecione a conta (0-" + contas.size() + "): ");
+        int escolha = sc.nextInt();
+        sc.nextLine();
 
         if (escolha == 0) {
             return; 
@@ -107,15 +112,17 @@ public class menuBancoCliente {
             System.out.println("0 - Sair da Conta");
             
             ConsolaUi.linha();
+            System.out.print("Escolha uma opção: ");
 
-            opcao = Utils.lerInteiroSeguro(sc, "Escolha uma opção: ");
+            opcao = sc.nextInt();
+            sc.nextLine(); 
 
             switch (opcao) {
                 case 1:
                     CanalAcesso.consultarSaldo(sc, conta);
                     break;
                 case 2:
-                    Utils.limparTela();
+                    ContaService contaService = new ContaService();
                     ConsolaUi.titulo("Depositar dinheiro");
 
                     System.out.println("Conta : " + conta.getIban());
@@ -123,30 +130,18 @@ public class menuBancoCliente {
                     System.out.println("Saldo : " + String.format("%.2f EUR", conta.getSaldo()));
 
                     ConsolaUi.linha();
-                    
-                    double valorDeposito = Utils.lerDoubleSeguro(sc, "Introduza o valor a depositar: ");
+                    System.out.print("Introduza o valor a depositar: ");
+                    double valorDeposito = sc.nextDouble();
 
-                    if (valorDeposito <= 0) {
-                        Utils.erro("O valor deve ser maior que zero.");
-                        ConsolaUi.pausa(sc);
-                        break;
-                    }
-
-                    conta.depositarDinheiro(valorDeposito);
-                    contaRepo.atualizar(conta);
-                    
-                    Utils.sucesso("Depósito realizado com sucesso!");
-                    System.out.println("Novo saldo: " + String.format("%.2f EUR", conta.getSaldo()));
-                    ConsolaUi.pausa(sc);
+                    Conta depositar = contaService.depositarDinheiro(conta, valorDeposito);
 
                     break;
                 case 3:
                     ConsolaUi.titulo("Levantar Dinheiro");
-                    
-                    double quantidade = Utils.lerDoubleSeguro(sc, "Quantidade a levantar: ");
-                    
-                    conta.levantarDinheiro(quantidade);
-                    contaRepo.atualizar(conta);
+                    System.out.print("Quantidade a levantar: ");
+                    double quantidade = sc.nextDouble();
+                    src.utils.Session.getCurrentConta().levantarDinheiro(quantidade);
+                    contaRepo.atualizar(src.utils.Session.getCurrentConta());
                     break;
                 case 4:
                     ConsolaUi.titulo("Fazer Transferências");
