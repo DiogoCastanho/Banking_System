@@ -30,7 +30,8 @@ public class ClienteCSVRepository {
         List<Cliente> clientes = listarClientes(ficheiro);
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ficheiro))) {
-            
+            bw.write("Nome,NIF,Utilizador,Senha");
+            bw.newLine();
             for (Cliente c : clientes) {
                 
                 if (c.getNif().equals(cliente.getNif())) {
