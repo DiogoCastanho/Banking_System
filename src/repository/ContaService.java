@@ -84,6 +84,33 @@ public class ContaService {
         return conta;
     }
 
+    public Conta criarContaAdicional(String nifCliente, TipoContaEnum tipoConta) {
+        Cliente cliente = clienteRepository.buscarPorNif(nifCliente);
+
+        if (cliente == null) {
+            throw new IllegalArgumentException("Cliente não encontrado");
+        }
+
+        Cartao cartao = new Cartao(
+                Gerador.gerarNumeroCartao(),
+                Gerador.gerarValidade(),
+                Gerador.gerarCVV(),
+                Gerador.gerarPIN(),
+                false
+        );
+
+        Conta conta = new Conta(
+                Gerador.gerarIBAN(),
+                nifCliente,
+                0,
+                tipoConta,
+                cartao
+        );
+
+        contaRepository.salvar(conta);
+
+        return conta;
+    }
     
     public Conta escolherConta(List<Conta> contas) {
         int opcao;

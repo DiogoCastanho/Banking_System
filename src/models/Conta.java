@@ -62,6 +62,26 @@ public class Conta {
         ConsolaUi.pausa(sc);
     }
 
+    public boolean levantarDinheiroSemPausa(double valor) {
+        if (valor <= 0) {
+            return false;
+        }
+        if (valor > saldo) {
+            return false;
+        }
+        saldo -= valor;
+        Movimento movimento = new Movimento(
+            new java.util.Date(),
+            valor,
+            saldo,
+            TipoMove.levantar,
+            "0"
+        );
+        movimentos.add(movimento);
+        movimentoRepo.salvar(iban, movimento);
+        return true;
+    }
+
     public void depositarDinheiro(double valor) {
         if (valor <= 0) {
             Utils.erro("Valor inválido para depósito.");
