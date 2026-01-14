@@ -26,7 +26,7 @@ public class menuAtm {
         ConsolaUi.titulo("Menu ATM ");
         System.out.println("1 - Consultar Saldo");
         System.out.println("2 - Levantar dinheiro");
-        System.out.println("3 - Transferir dinheiro");
+        System.out.println("3 - Fazer Transferências");
         System.out.println("4 - Últimos Movimentos");
         System.out.println("5 - Alterar Pin");
         System.out.println("0 - Voltar");
@@ -93,7 +93,6 @@ public class menuAtm {
             ultimoCartao = n_cartao;
         }
 
-        // 1. Verificar primeiro se a conta existe e se já está bloqueada
         Conta contaExistente = contaRepo.buscarCartaoPorNumero(n_cartao);
         if (contaExistente != null && contaExistente.getCartao().isBloqueado()) {
             Utils.erro("Este cartão encontra-se bloqueado. Contacte o banco.");
@@ -101,7 +100,7 @@ public class menuAtm {
             return false;
         }
         else if(contaExistente == null) {
-            System.out.println("Cartão não encontrado.");
+            Utils.aviso("Cartão não encontrado.");
             ConsolaUi.pausa(sc);
             return false;
         }

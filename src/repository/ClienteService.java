@@ -54,23 +54,44 @@ public class ClienteService {
     }
 
     public Cliente editarCliente(String nome, String nif, String utilizador, String senha) {
-        Cliente c = new Cliente(nome, nif, utilizador, senha, null);
 
-        if (!c.getNome().equals(nome)) {
-            c.setNome(nome);
+        Cliente existente = clienteRepository.buscarPorNif(nif);
+        if (existente == null) {
+            throw new IllegalArgumentException("Cliente não encontrado");
         }
 
-        if (!c.getUtilizador().equals(utilizador)) {
-            c.setUtilizador(utilizador);
+        boolean alterado = false;
+
+        if (!existente.getNome().equals(nome)) {
+            existente.setNome(nome);
+            alterado = true;
         }
 
-        if (!c.getSenha().equals(senha)) {
-            c.setSenha(senha);
+        if (!existente.getUtilizador().equals(utilizador)) {
+            Cliente outro = clienteRepository.buscarClientePorUtilizador(utilizador);
+            if (outro != null && !outro.getNif().equals(nif)) {
+                throw new IllegalArgumentException("O utilizador já existe");
+            }
+            existente.setUtilizador(utilizador);
+            alterado = true;
         }
 
-        clienteRepository.atualizar(c);
+        if (!existente.getSenha().equals(senha)) {
+            if (senha.length() < 4) {
+                throw new IllegalArgumentException("Senha muito curta");
+            }
+            existente.setSenha(senha);
+            alterado = true;
+        }
 
-        return c;
+        if (!alterado) {
+            Utils.aviso("Nenhum dado foi alterado.");
+            return existente;
+        }
+
+        clienteRepository.atualizar(existente);
+
+        return existente;
 
     }
 

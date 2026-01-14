@@ -92,7 +92,8 @@ public class menuBanco {
                             ConsolaUi.pausa(sc);
 
                             String nomeC = Utils.lerTextoParaAtualizarCliente(sc, "Atualizar nome (ENTER para manter): ", clienteEdit.getNome());
-                            String nifC = Utils.lerTextoParaAtualizarCliente(sc, "*NIF Impossível editar", clienteEdit.getNif());
+                            System.out.println("NIF (não editável): " + clienteEdit.getNif());
+                            String nifC = clienteEdit.getNif();
                             String utilizadorC = Utils.lerTextoParaAtualizarCliente(sc, "Atualizar utilizador (ENTER para manter): ", clienteEdit.getUtilizador());
                             String senhaC = Utils.lerSenhaParaAtualizarCliente(sc, "Atualizar senha (ENTER para manter): ",clienteEdit.getSenha());
                             ConsolaUi.pausa(sc);
