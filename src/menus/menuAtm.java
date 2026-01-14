@@ -31,7 +31,6 @@ public class menuAtm {
         System.out.println("5 - Alterar Pin");
         System.out.println("0 - Voltar");
         ConsolaUi.linha();
-        System.out.print("Escolha uma opção: ");
 
         opcao = Utils.lerInteiroSeguro(sc, "Escolha uma opção: ");
 

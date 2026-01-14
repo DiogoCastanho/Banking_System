@@ -89,7 +89,7 @@ public class ContaService {
         int opcao;
 
         do {
-            opcao = Utils.lerOpcao(sc, "Escola a conta: ");
+            opcao = Utils.lerOpcao(sc, "Escolha a conta: ");
         } while (opcao < 1 || opcao > contas.size());
 
         return contas.get(opcao - 1);
