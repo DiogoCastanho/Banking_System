@@ -27,7 +27,6 @@ public class menuBancoCliente {
 
             ConsolaUi.linha();
             opcao = Utils.lerInteiroSeguro(sc, "Escolha uma opção: ");
-            sc.nextLine();
 
             switch (opcao) {
                 case 1:
@@ -107,7 +106,6 @@ public class menuBancoCliente {
             System.out.println("0 - Sair da Conta");
             
             ConsolaUi.linha();
-            System.out.print("Escolha uma opção: ");
 
             opcao = Utils.lerInteiroSeguro(sc, "Escolha uma opção: ");
             sc.nextLine();
@@ -132,7 +130,6 @@ public class menuBancoCliente {
                     break;
                 case 3:
                     ConsolaUi.titulo("Levantar Dinheiro");
-                    System.out.print("Quantidade a levantar: ");
                     double quantidade = Utils.lerDoubleSeguro(sc, "Quantidade a levantar:");
                     src.utils.Session.getCurrentConta().levantarDinheiro(quantidade);
                     contaRepo.atualizar(src.utils.Session.getCurrentConta());
