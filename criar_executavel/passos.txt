@@ -1,6 +1,6 @@
 Entrar no CMD e seguir os passos:
 
-1º Passo: cd C:\Users\admin\OneDrive\Desktop\University\1_Semestre\POO\Projeto Final\Banking_Systemc
+1º Passo: cd pasta onde esta o projeto
 
 2º Passo: javac src\Main.java src\menus\*.java src\ui\*.java src\utils\*.java src\models\*.java src\repository\*.java
 

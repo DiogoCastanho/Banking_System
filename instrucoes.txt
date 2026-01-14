@@ -1,0 +1,5 @@
+======= COMO CORRER O CODIGO =======
+
+2 Opções:
+	1) Abrir executavel
+	2) Correr o programa pelo Main.java

@@ -145,10 +145,9 @@ public class menuBanco {
                         Utils.sucesso("Cliente encontrado");
                         System.out.println(clienteRemover.toStringDetalhes(nifR));
 
-                        String confirmação = Utils.lerTextoObrigatorio(sc,
-                                "Tem a certeza que deseja remover este cliente? (S/N): ");
+                        String confirmacao = Utils.lerTextoObrigatorio(sc,"Tem a certeza que deseja remover este cliente? (S/N): ");
 
-                        if (confirmação.equalsIgnoreCase("S")) {
+                        if (confirmacao.equalsIgnoreCase("S")) {
                             clienteService.removerCliente(nifR);
                         } else {
                             Utils.aviso("Operação cancelada.");
