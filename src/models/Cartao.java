@@ -56,9 +56,7 @@ public class Cartao {
 
     @Override
     public String toString() {
-            String ultimos4 = numero.substring(numero.length() - 4);
-
-            return "Cartão: **** **** **** " + ultimos4 +
+            return "Cartão: " + numero +
                 " | Validade: " + validade.getMonthValue() + "/" + validade.getYear();
         }
 }

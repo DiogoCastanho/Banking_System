@@ -41,7 +41,6 @@ public class menuAtm {
           case 2:
             Utils.limparTela();
             ConsolaUi.titulo("Levantar Dinheiro");
-            System.out.print("Quantidade a levantar: ");
             double quantidade = Utils.lerDoubleSeguro(sc, "Quantidade a levantar: ");
             src.utils.Session.getCurrentConta().levantarDinheiro(quantidade);
             contaRepo.atualizar(src.utils.Session.getCurrentConta());

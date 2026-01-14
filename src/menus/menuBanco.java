@@ -208,7 +208,7 @@ public class menuBanco {
                     if (src.utils.Session.getCurrentConta().getCartao().isBloqueado() == true) {
                         src.utils.Session.getCurrentConta().getCartao().desbloquearCartao();
                     } else {
-                        Utils.aviso("O cartão apresentado, não se encontra bloqueado.");
+                        Utils.aviso("O cartão apresentado não se encontra bloqueado.");
                     }
 
                     contaRepository.atualizar(src.utils.Session.getCurrentConta());
