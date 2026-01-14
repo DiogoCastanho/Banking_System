@@ -115,7 +115,6 @@ public class Conta {
             );
             movimentos.add(movimento);
             movimentoRepo.salvar(iban, movimento);
-            ConsolaUi.pausa(sc);
             break;
         }
     }
