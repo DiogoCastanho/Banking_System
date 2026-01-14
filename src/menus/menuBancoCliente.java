@@ -67,7 +67,7 @@ public class menuBancoCliente {
         
         System.out.println("[0] Voltar ao Menu Principal");
         ConsolaUi.linha();
-        int escolha = Utils.lerInteiroSeguro(sc, "Escolha uma conta pelo número: ");
+        int escolha = Utils.lerInteiroSeguro(sc, "Selecione a conta (0-1): ");
 
         if (escolha == 0) {
             return; 
@@ -108,7 +108,6 @@ public class menuBancoCliente {
             ConsolaUi.linha();
 
             opcao = Utils.lerInteiroSeguro(sc, "Escolha uma opção: ");
-            sc.nextLine();
 
             switch (opcao) {
                 case 1:

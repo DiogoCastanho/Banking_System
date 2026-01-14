@@ -29,11 +29,21 @@ public class ClienteService {
             throw new IllegalArgumentException("Senha muito curta");
         }
 
-        if (clienteRepository.buscarPorNif(nif) != null) {
+        List<Cliente> clientesExistentes = ClienteCSVRepository.listarClientes("clientes.csv");
+
+        // verificar se o NIF ou utilizador já existem
+        // anyMatch retorna true se encontrar algum que satisfaça a condição
+        boolean nifExiste = clientesExistentes.stream()
+            .anyMatch(c -> c.getNif().trim().equals(nif.trim()));
+
+        if (nifExiste) {
             throw new IllegalArgumentException("O NIF introduzido já existe.");
         }
 
-        if (clienteRepository.buscarClientePorUtilizador(utilizador) != null) {
+        boolean utilizadorExiste = clientesExistentes.stream()
+            .anyMatch(c -> c.getUtilizador().trim().equals(utilizador.trim()));
+
+        if (utilizadorExiste) {
             throw new IllegalArgumentException("O utilizador já existe");
         }
 

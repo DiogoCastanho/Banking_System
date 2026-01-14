@@ -52,11 +52,11 @@ public class menuAtm {
             Utils.limparTela();
             ConsolaUi.titulo("Últimos Movimentos");
             if(src.utils.Session.getCurrentConta().getMovimentos().isEmpty()) {
-                System.out.println("Nenhum movimento encontrado.");
+                Utils.aviso("Nenhum movimento encontrado.");
+                ConsolaUi.pausa(sc);
             } else {
                     System.out.println(src.utils.Session.getCurrentConta().getMovimentos());
             }
-            ConsolaUi.pausa(sc);
             break;
           case 5:
             Utils.limparTela();

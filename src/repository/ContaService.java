@@ -127,12 +127,8 @@ public class ContaService {
     }
 
     public Conta depositarDinheiro(Conta conta, double valor) {
-        if (valor <= 0) {
-            Utils.erro("O valor introduzido é inválido");
-            return conta;
-        }
 
-        conta.depositarDinheiro(valor); // Usa o método da classe Conta
+        conta.depositarDinheiro(valor);
         contaRepository.atualizar(conta);
         
         Utils.sucesso("Depósito realizado com sucesso!");

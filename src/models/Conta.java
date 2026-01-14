@@ -40,46 +40,85 @@ public class Conta {
 
   public void levantarDinheiro(double valor) {
         Scanner sc = new Scanner(System.in);
-        if (valor <= 0) {
-            Utils.erro("Valor inválido para levantamento.");
-            return;
-        }
-        if (valor > saldo) {
-            Utils.erro("Saldo insuficiente para o levantamento.");
+
+        while (true) {
+            if (valor <= 0) {
+                Utils.erro("Valor inválido para levantamento.");
+                ConsolaUi.pausa(sc);
+                System.out.print("Quantidade a levantar: ");
+                String entrada = sc.nextLine().trim();
+                try {
+                    valor = Double.parseDouble(entrada);
+                } catch (NumberFormatException e) {
+                    Utils.erro("Por favor, introduza um número válido.");
+                    continue;
+                }
+                continue;
+            }
+
+            if (valor > saldo) {
+                Utils.erro("Saldo insuficiente para o levantamento.");
+                ConsolaUi.pausa(sc);
+                System.out.print("Quantidade a levantar: ");
+                String entrada = sc.nextLine().trim();
+                try {
+                    valor = Double.parseDouble(entrada);
+                } catch (NumberFormatException e) {
+                    Utils.erro("Por favor, introduza um número válido.");
+                    continue;
+                }
+                continue;
+            }
+
+            saldo -= valor;
+            Movimento movimento = new Movimento(
+                new java.util.Date(), 
+                valor, 
+                saldo, 
+                TipoMove.levantar,
+                "0"
+            );
+            movimentos.add(movimento);
+            movimentoRepo.salvar(iban, movimento);
+            Utils.sucesso("Levantamento de " + valor + " EUR realizado com sucesso.");
             ConsolaUi.pausa(sc);
-            return;
+            break;
         }
-        saldo -= valor;
-        Movimento movimento = new Movimento(
-            new java.util.Date(), 
-            valor, 
-            saldo, 
-            TipoMove.levantar,
-            "0"
-        );
-        movimentos.add(movimento);
-        movimentoRepo.salvar(iban, movimento);
-        Utils.sucesso("Levantamento de " + valor + " EUR realizado com sucesso.");
-        ConsolaUi.pausa(sc);
     }
 
     public void depositarDinheiro(double valor) {
-        if (valor <= 0) {
-            Utils.erro("Valor inválido para depósito.");
-            return;
+        Scanner sc = new Scanner(System.in);
+
+        while (true) {
+            if (valor <= 0) {
+                Utils.erro("Valor inválido para depósito.");
+                ConsolaUi.pausa(sc);
+                System.out.print("Valor a depositar: ");
+                String entrada = sc.nextLine().trim();
+                try {
+                    valor = Double.parseDouble(entrada);
+                } catch (NumberFormatException e) {
+                    Utils.erro("Por favor, introduza um número válido.");
+                    continue;
+                }
+                continue;
+            }
+
+            saldo += valor;
+
+            Movimento movimento = new Movimento(
+                new java.util.Date(), 
+                valor, 
+                saldo, 
+                TipoMove.depositar, 
+                "0"
+            );
+            movimentos.add(movimento);
+            movimentoRepo.salvar(iban, movimento);
+            Utils.sucesso("Depósito de " + valor + " EUR realizado com sucesso.");
+            ConsolaUi.pausa(sc);
+            break;
         }
-        
-        saldo += valor;
-        
-        Movimento movimento = new Movimento(
-            new java.util.Date(), 
-            valor, 
-            saldo, 
-            TipoMove.depositar, 
-            "0"
-        );
-        movimentos.add(movimento);
-        movimentoRepo.salvar(iban, movimento);
     }
 
     public ArrayList<Movimento> getMovimentos() {

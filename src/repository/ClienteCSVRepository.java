@@ -53,6 +53,12 @@ public class ClienteCSVRepository {
 
     public static List<Cliente> listarClientes(String caminhoArquivo) {
         List<Cliente> clientes = new ArrayList<>();
+        File arquivo = new File(caminhoArquivo);
+        if (!arquivo.exists()) {
+            Utils.aviso("Ficheiro '" + caminhoArquivo + "' não encontrado. Criando novo ficheiro.");
+            return clientes;
+        }
+
         try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
             br.readLine();
             String linha;
@@ -64,7 +70,7 @@ public class ClienteCSVRepository {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Utils.erro("Erro ao ler o ficheiro de clientes: " + e.getMessage());
         }
         return clientes;
     }

@@ -79,56 +79,82 @@ public class menuBanco {
                 case 3:
                     System.out.println("\n== Editar Cliente");
                     
-                    String nifCl = Utils.lerTextoObrigatorio(sc, "Introduza o NIF do cliente: ");
+                    Cliente clienteEdit = null;
+                    String nifCl = "";
 
-                    try {
-                        Cliente clienteEdit = clienteRepository.buscarPorNif(nifCl);
+                    do {
+                        nifCl = Utils.lerTextoObrigatorio(sc, "Introduza o NIF do cliente: ");
+
+                        if (!nifCl.matches("\\d{9}")) {
+                            Utils.erro("NIF inválido: deve ter exatamente 9 dígitos.");
+                            ConsolaUi.pausa(sc);
+                            continue;
+                        }
+
+                        clienteEdit = clienteRepository.buscarPorNif(nifCl);
 
                         if (clienteEdit == null) {
-                            throw new IllegalArgumentException("Cliente não encontrado.");
-                        } else {
-                            Utils.sucesso("Cliente encontrado");
-                            System.out.println(clienteEdit.toStringDetalhes(nifCl));
+                            Utils.erro("Cliente não encontrado. Tente novamente.");
                             ConsolaUi.pausa(sc);
-
-                            String nomeC = Utils.lerTextoParaAtualizarCliente(sc, "Atualizar nome (ENTER para manter): ", clienteEdit.getNome());
-                            System.out.println("NIF (não editável): " + clienteEdit.getNif());
-                            String nifC = clienteEdit.getNif();
-                            String utilizadorC = Utils.lerTextoParaAtualizarCliente(sc, "Atualizar utilizador (ENTER para manter): ", clienteEdit.getUtilizador());
-                            String senhaC = Utils.lerSenhaParaAtualizarCliente(sc, "Atualizar senha (ENTER para manter): ",clienteEdit.getSenha());
-                            ConsolaUi.pausa(sc);
-
-                            clienteService.editarCliente(nomeC, nifC, utilizadorC, senhaC);
-                            ConsolaUi.pausa(sc);
-
                         }
+                    } while (clienteEdit == null);
+
+                    try {
+                        Utils.sucesso("Cliente encontrado");
+                        System.out.println(clienteEdit.toStringDetalhes(nifCl));
+                        ConsolaUi.pausa(sc);
+
+                        String nomeC = Utils.lerTextoParaAtualizarCliente(sc, "Atualizar nome (ENTER para manter): ", clienteEdit.getNome());
+                        System.out.println("NIF (não editável): " + clienteEdit.getNif());
+                        String nifC = clienteEdit.getNif();
+                        String utilizadorC = Utils.lerTextoParaAtualizarCliente(sc, "Atualizar utilizador (ENTER para manter): ", clienteEdit.getUtilizador());
+                        String senhaC = Utils.lerSenhaParaAtualizarCliente(sc, "Atualizar senha (ENTER para manter): ",clienteEdit.getSenha());
+                        ConsolaUi.pausa(sc);
+
+                        clienteService.editarCliente(nomeC, nifC, utilizadorC, senhaC);
+                        ConsolaUi.pausa(sc);
+
                     } catch (IllegalArgumentException e) {
                         Utils.erro(e.getMessage());
                     }
                     break;
                 case 4:
                     System.out.println("\n== Remover Cliente");
-                    String nifR = Utils.lerTextoObrigatorio(sc, "Introduza o NIF do cliente: ");
+
+                    Cliente clienteRemover = null;
+                    String nifR = "";
+
+                    // repetir pedido do NIF até encontrar o cliente ou até inserir NIF válido
+                    do {
+                        nifR = Utils.lerTextoObrigatorio(sc, "Introduza o NIF do cliente: ");
+
+                        if (!nifR.matches("\\d{9}")) {
+                            Utils.erro("NIF inválido: deve ter exatamente 9 dígitos.");
+                            ConsolaUi.pausa(sc);
+                            continue;
+                        }
+
+                        clienteRemover = clienteRepository.buscarPorNif(nifR);
+
+                        if (clienteRemover == null) {
+                            Utils.erro("Cliente não encontrado. Tente novamente.");
+                            ConsolaUi.pausa(sc);
+                        }
+                    } while (clienteRemover == null);
 
                     try {
-                        Cliente cliente = clienteRepository.buscarPorNif(nifR);
-                        
-                        if (cliente == null) {
-                            throw new IllegalArgumentException("Cliente não encontrado.");
-                        }
-                        else {
-                            Utils.sucesso("Cliente encontrado");
-                            System.out.println(cliente.toStringDetalhes(nifR));
+                        Utils.sucesso("Cliente encontrado");
+                        System.out.println(clienteRemover.toStringDetalhes(nifR));
 
-                            String confirmação = Utils.lerTextoObrigatorio(sc, 
+                        String confirmação = Utils.lerTextoObrigatorio(sc,
                                 "Tem a certeza que deseja remover este cliente? (S/N): ");
 
-                            if (confirmação.equalsIgnoreCase("S")) {
-                                clienteService.removerCliente(nifR);
-                            } else {
-                                Utils.aviso("Operação cancelada.");
-                            }
+                        if (confirmação.equalsIgnoreCase("S")) {
+                            clienteService.removerCliente(nifR);
+                        } else {
+                            Utils.aviso("Operação cancelada.");
                         }
+
                         ConsolaUi.pausa(sc);
 
                     } catch (IllegalArgumentException e) {
@@ -140,8 +166,27 @@ public class menuBanco {
 
                     ConsolaUi.titulo("Criar Conta Adicional");
 
-                    String nifCliente = Utils.lerTextoObrigatorio(sc, "Introduza o NIF do cliente: ");
-                    
+                    String nifCliente = "";
+                    Cliente clienteConta = null;
+
+                    // repetir pedido do NIF até encontrar o cliente
+                    do {
+                        nifCliente = Utils.lerTextoObrigatorio(sc, "Introduza o NIF do cliente: ");
+
+                        if (!nifCliente.matches("\\d{9}")) {
+                            Utils.erro("NIF inválido: deve ter exatamente 9 dígitos.");
+                            ConsolaUi.pausa(sc);
+                            continue;
+                        }
+
+                        clienteConta = clienteRepository.buscarPorNif(nifCliente);
+
+                        if (clienteConta == null) {
+                            Utils.erro("Cliente não encontrado. Tente novamente.");
+                            ConsolaUi.pausa(sc);
+                        }
+                    } while (clienteConta == null);
+
                     try {
                         Conta conta = contaService.criarContaAdicional(nifCliente);
 
@@ -153,8 +198,6 @@ public class menuBanco {
 
                             ConsolaUi.pausa(sc);
                         }
-
-                        
 
                     } catch (IllegalArgumentException e) {
                         Utils.erro(e.getMessage());
@@ -176,12 +219,31 @@ public class menuBanco {
                     break;
                 case 7:
                     System.out.println("\n== Remover Conta");
-                    String nifRc = Utils.lerTextoObrigatorio(sc, "Introduza o NIF do cliente: ");
+
+                    Cliente clienteParaRemover = null;
+                    String nifRc = "";
+
+                    // repetir pedido do NIF até ter 9 dígitos e o cliente existir
+                    do {
+                        nifRc = Utils.lerTextoObrigatorio(sc, "Introduza o NIF do cliente: ");
+
+                        if (!nifRc.matches("\\d{9}")) {
+                            Utils.erro("NIF inválido: deve ter exatamente 9 dígitos.");
+                            ConsolaUi.pausa(sc);
+                            continue;
+                        }
+
+                        clienteParaRemover = clienteRepository.buscarPorNif(nifRc);
+
+                        if (clienteParaRemover == null) {
+                            Utils.erro("Cliente não encontrado. Tente novamente.");
+                            ConsolaUi.pausa(sc);
+                        }
+                    } while (clienteParaRemover == null);
 
                     try {
                         List<Conta> contasCliente = contaRepository.buscarContasCliente(nifRc);
 
-                                            
                         if (contasCliente == null || contasCliente.isEmpty()) {
                             Utils.aviso("O cliente não possui contas associadas.");
                             ConsolaUi.pausa(sc);
@@ -191,7 +253,7 @@ public class menuBanco {
                         ConsolaUi.mostrarContas(contasCliente, nifRc, sc);
 
                         Conta contaEscolhida = contaService.escolherConta(contasCliente);
-                        
+
                         contaService.buscarContaParaRemover(contaEscolhida);
                         ConsolaUi.pausa(sc);
 
