@@ -126,10 +126,12 @@ public class Conta {
     }
 
   @Override
+  // melhora o toString para mostrar info da conta
   public String toString() {
       return "IBAN: " + iban +
             "\nTipo de Conta: " + tipoconta +
-            "\nSaldo: " + String.format("%.2f EUR", saldo);
+            "\nSaldo: " + String.format("%.2f EUR", saldo) + 
+            "\n---------------------------\n";
   }
 
   public String toCsv() {

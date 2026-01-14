@@ -124,7 +124,6 @@ public class menuBanco {
                     Cliente clienteRemover = null;
                     String nifR = "";
 
-                    // repetir pedido do NIF até encontrar o cliente ou até inserir NIF válido
                     do {
                         nifR = Utils.lerTextoObrigatorio(sc, "Introduza o NIF do cliente: ");
 
