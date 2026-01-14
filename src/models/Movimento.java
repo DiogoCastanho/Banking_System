@@ -27,7 +27,7 @@ public class Movimento {
     @Override
     public String toString() {
         return new StringBuilder()
-            .append("--- Detalhes da Operação ---\n")
+            .append("\n--- Detalhes da Operação ---\n")
             .append(String.format("  Data/Hora:     %s\n", data_hora))
             .append(String.format("  Tipo:          %s\n", tipo_movimento))
             .append(String.format("  Valor:         %.2f\n", valor))

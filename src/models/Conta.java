@@ -46,6 +46,7 @@ public class Conta {
         }
         if (valor > saldo) {
             Utils.erro("Saldo insuficiente para o levantamento.");
+            ConsolaUi.pausa(sc);
             return;
         }
         saldo -= valor;

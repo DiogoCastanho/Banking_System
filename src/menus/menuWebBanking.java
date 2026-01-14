@@ -170,7 +170,6 @@ public class menuWebBanking {
                     CanalAcesso.consultarSaldo(sc, conta);
                     break;
                 case 2:
-                    // usa o método centralizado em CanalAcesso
                     CanalAcesso.fazerTransferencia(sc, conta, contaRepo);
                     break;
                 case 3:
@@ -217,32 +216,35 @@ public class menuWebBanking {
         
         ClienteCSVRepository clienteRepo = new ClienteCSVRepository();
         
-        System.out.print("Password atual: ");
-        String passwordAtual = sc.nextLine().trim();
+        String passwordAtual;
+        do {
+            System.out.print("Password atual: ");
+            passwordAtual = sc.nextLine().trim();
+            if (!passwordAtual.equals(cliente.getSenha())) {
+                Utils.erro("Password atual incorreta!");
+                ConsolaUi.pausa(sc);
+            }
+        } while (!passwordAtual.equals(cliente.getSenha()));
         
-        if (!passwordAtual.equals(cliente.getSenha())) {
-            Utils.erro("Password atual incorreta!");
-            ConsolaUi.pausa(sc);
-            return;
-        }
-        
-        System.out.print("Nova password: ");
-        String novaPassword = sc.nextLine().trim();
-        
-        if (novaPassword.length() < 4) {
-            Utils.erro("A password deve ter pelo menos 4 caracteres.");
-            ConsolaUi.pausa(sc);
-            return;
-        }
-        
-        System.out.print("Confirme a nova password: ");
-        String confirmacao = sc.nextLine().trim();
-        
-        if (!novaPassword.equals(confirmacao)) {
-            Utils.erro("As passwords não coincidem!");
-            ConsolaUi.pausa(sc);
-            return;
-        }
+        String novaPassword;
+        do {
+            System.out.print("Nova password: ");
+            novaPassword = sc.nextLine().trim();
+            if (novaPassword.length() < 4) {
+                Utils.erro("A password deve ter pelo menos 4 caracteres.");
+                ConsolaUi.pausa(sc);
+            }
+        } while (novaPassword.length() < 4);
+
+        String confirmacao;
+        do {
+            System.out.print("Confirme a nova password: ");
+            confirmacao = sc.nextLine().trim();
+            if (!novaPassword.equals(confirmacao)) {
+                Utils.erro("As passwords não coincidem!");
+                ConsolaUi.pausa(sc);
+            }
+        } while (!novaPassword.equals(confirmacao));
         
         cliente.setSenha(novaPassword);
         clienteRepo.atualizar(cliente);
