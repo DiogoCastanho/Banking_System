@@ -26,13 +26,14 @@ public class Movimento {
 
     @Override
     public String toString() {
-        return String.format(
-            "Data/Hora: %-20s | Valor: %-10.2f | Saldo Após: %-10.2f | Tipo: %-12s | IBAN Dest: %-10s",
-            data_hora.toString(),
-            valor,
-            saldo_apos_operacao,
-            tipo_movimento.toString(),
-            ibanDestinatario
-        );
+        return new StringBuilder()
+            .append("--- Detalhes da Operação ---\n")
+            .append(String.format("  Data/Hora:     %s\n", data_hora))
+            .append(String.format("  Tipo:          %s\n", tipo_movimento))
+            .append(String.format("  Valor:         %.2f\n", valor))
+            .append(String.format("  IBAN Dest.:    %s\n", (ibanDestinatario != null ? ibanDestinatario : "N/A")))
+            .append(String.format("  Saldo Final:   %.2f\n", saldo_apos_operacao))
+            .append("---------------------------")
+            .toString();
     }
 }
