@@ -115,7 +115,6 @@ public class Conta {
             );
             movimentos.add(movimento);
             movimentoRepo.salvar(iban, movimento);
-            Utils.sucesso("Depósito de " + valor + " EUR realizado com sucesso.");
             ConsolaUi.pausa(sc);
             break;
         }
